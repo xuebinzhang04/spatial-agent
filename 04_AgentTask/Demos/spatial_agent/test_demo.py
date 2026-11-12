@@ -363,6 +363,56 @@ class DemoTests(unittest.TestCase):
         for stale in (OUTPUT/'static/media').glob('*.gif'):
             self.assertIn(str(stale.relative_to(OUTPUT)),{e['asset'] for e in examples if e['displayed']})
 
+    def test_shape_card_compares_public_views_around_the_recorded_camera_path(self):
+        html=(OUTPUT/'index.html').read_text()
+        cases=html.split('<section id="tasks"',1)[1].split('</section>',1)[0]
+        self.assertEqual(cases.count('class="case-evidence"'),1)
+        card=cases.split('id="case-shape_identification"',1)[1].split('</article>',1)[0]
+        examples=json.loads((OUTPUT/'data/gif-examples.json').read_text())
+        episode_id=next(e['episode'] for e in examples if e['task']=='shape_identification')
+        episode=next(e for e in self.catalog['episodes'] if e['id']==episode_id)
+        frames=episode['frames']
+        submit=next(i for i,f in enumerate(frames) if f['action'] and f['action']['action']=='SUBMIT_SHAPE')
+        self.assertTrue(all(f['action']['action'].startswith('CAMERA_') for f in frames[1:submit]))
+        evidence=card.split('class="case-evidence"',1)[1].split('</figure>',1)[0]
+        before,after=frames[0]['image'],frames[submit-1]['image']
+        self.assertNotEqual(frames[0]['source_rgb_sha256'],frames[submit-1]['source_rgb_sha256'])
+        self.assertLess(evidence.index('src="'+before+'"'),evidence.index('src="'+after+'"'))
+        self.assertIn('After · step '+str(submit-1),evidence)
+        self.assertIn('steps 1–'+str(submit-1),evidence)
+        for name in {f['action']['action'] for f in frames[1:submit]}:
+            self.assertIn('<code>'+name+'</code>',evidence)
+        self.assertTrue(episode['provenance']['privileged_policy'])
+        self.assertIn('Privileged oracle reference, not a VLM result',evidence)
+        self.assertNotIn('candidate_1',evidence)  # no evaluator answer in the comparison text
+        self.assertIn('class="case-link" href="#explorer" data-task="shape_identification" data-episode="'+episode_id+'"',card)
+        # The caption's exact-path claim holds against the private witness, which itself stays off the page.
+        source=ROOT/episode['provenance']['directory']
+        witness=json.loads((source/'privileged.jsonl').open().readline())['state']['ambiguity_witness']
+        self.assertEqual([f['action'] for f in frames[1:submit]],witness['actions'])
+        self.assertIn('matches, action for action, the camera path the generator found',evidence)
+        self.assertNotIn('generator audit verified',evidence)
+        page=html+(OUTPUT/'data/catalog.json').read_text()
+        for private in ('ambiguity_witness','changed_foreground_fraction','retained_target_area_ratio',
+                        repr(witness['changed_foreground_fraction'])):
+            self.assertNotIn(private,page)
+
+    def test_shape_evidence_rejects_same_length_different_path(self):
+        import build
+        episode=next(e for e in self.catalog['episodes']
+                     if e['provenance']['directory']==json.loads((HERE/'demo.json').read_text())['showcase']['shape_identification'])
+        source=ROOT/episode['provenance']['directory']
+        witness=build.recorded_witness(source)
+        variables={'witness_actions':len(witness),'initial_pixel_twins':1}
+        self.assertIn('case-evidence',build.evidence_comparison(episode,variables,witness))
+        reordered=witness[::-1]
+        self.assertEqual(len(reordered),len(witness))
+        self.assertNotEqual(reordered,witness)
+        with self.assertRaisesRegex(ValueError,'differs from the generator'):
+            build.evidence_comparison(episode,variables,reordered)
+        with self.assertRaisesRegex(ValueError,'differs from the generator'):
+            build.evidence_comparison(episode,variables,None)
+
     def test_repeated_online_read_does_not_duplicate_steps_or_rewards(self):
         snapshot = {"environment": "shape3d", "task": "shape_identification", "step": 1, "seed": 42, "budget": 20,
                     "views": [{"name": "Agent observation", "image": "test.png"}], "observation": {"instruction": "Inspect shape"},

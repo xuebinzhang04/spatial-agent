@@ -156,7 +156,65 @@ def case_facts(templates, variables):
     return [(label, template.format(**values)) for label, template in templates]
 
 
-def case_card(episode, task, example, variables, gif):
+# Cards that add a before/after comparison of public frames around the evidence-adding camera path.
+EVIDENCE_COMPARISON = {"shape_identification"}
+
+
+def camera_path(episode):
+    """Recorded camera actions before the first task action, the frame after them, and the task action."""
+    frames = episode['frames']
+    first_task = next((i for i, _ in key_steps(episode)), None)
+    if first_task is None or first_task < 2:
+        raise ValueError(f"No camera path precedes a task action: {episode['id']}")
+    path = [frames[i]['action']['action'] for i in range(1, first_task)]
+    if not all(name.startswith('CAMERA_') for name in path):
+        raise ValueError(f"Non-camera action before the first task action: {episode['id']}")
+    runs = []
+    for name in path:
+        if runs and runs[-1][0] == name:
+            runs[-1][1] += 1
+        else:
+            runs.append([name, 1])
+    return path, runs, first_task - 1, frames[first_task]['action']['action']
+
+
+def recorded_witness(directory):
+    """Build-time only: the generator's revealing camera actions from the step-0 privileged state.
+
+    The result is compared against the public trajectory and never written to the page or catalog."""
+    with (directory / 'privileged.jsonl').open() as handle:
+        witness = json.loads(handle.readline())['state'].get('ambiguity_witness')
+    return witness['actions'] if witness else None
+
+
+def evidence_comparison(episode, variables, witness):
+    """Public step 0 beside the public view reached by the recorded camera path, with provenance."""
+    path, runs, after, submit = camera_path(episode)
+    frames = episode['frames']
+    # Exact match: every recorded action (name and arguments) equals the generator's witness, in order.
+    if [frames[i]['action'] for i in range(1, after + 1)] != witness or len(path) != variables.get('witness_actions'):
+        raise ValueError(f"Recorded camera path differs from the generator's revealing path: {episode['id']}")
+    route = ' → '.join(f'<code>{escape(name)}</code>&nbsp;×{count}' for name, count in runs)
+    twins = variables.get('initial_pixel_twins', 0)
+    policy = ('Privileged oracle reference, not a VLM result: the policy replays the generator-verified camera path '
+              'and submits the evaluator answer.' if episode['provenance']['privileged_policy']
+              else f"Recorded {escape(episode['agent'])} policy.")
+    return (f'<figure class="case-evidence"><div class="evidence-pair">'
+            f'<div><img src="{escape(frames[0]["image"])}" alt="Step 0 public observation" loading="lazy">'
+            f'<p><strong>Before · step 0</strong> Initial public view. The generator checked that {twins} wrong '
+            f'candidate{"s" if twins != 1 else ""} placed at the target pose render{"" if twins != 1 else "s"} this '
+            f'identical image, so this view alone cannot settle the answer.</p></div>'
+            f'<div><img src="{escape(frames[after]["image"])}" alt="Step {after} public observation" loading="lazy">'
+            f'<p><strong>After · step {after}</strong> Same recorded trajectory after {len(path)} camera actions. '
+            f'The moved camera shows side faces and depth that the front projection hid.</p></div></div>'
+            f'<figcaption><p class="evidence-path">Camera path, steps 1–{after}: {route} → '
+            f'<code>{escape(submit)}</code> at step {after + 1}. This recorded path matches, action for action, the '
+            f'camera path the generator found when it checked that, from the resulting view, the target and one '
+            f'initial twin candidate differ in at least 10% of foreground pixels.</p>'
+            f'<p class="evidence-label">{policy}</p></figcaption></figure>')
+
+
+def case_card(episode, task, example, variables, gif, witness=None):
     """Static HTML for one task: question, design, phase timeline, this case's variables, success test."""
     frames = episode['frames']
     segments, start = [], 0
@@ -178,6 +236,7 @@ def case_card(episode, task, example, variables, gif):
             f'<div class="case-body"><p class="case-kicker">{escape(task.get("category", ""))} · {level}</p>'
             f'<h3>{escape(task["label"])}</h3><p class="case-question">{escape(example["question"])}</p>'
             f'<p>{escape(example["design"])}</p>'
+            + (evidence_comparison(episode, variables, witness) if episode['task'] in EVIDENCE_COMPARISON else '') +
             f'<div class="case-timeline">{bar}</div>'
             f'<p class="case-actions">{navigation} navigation/camera steps; task actions: {actions}</p>'
             f'<dl class="case-facts">{facts}</dl>'
@@ -407,7 +466,11 @@ def build(output, config_path, record):
         gif, source = case_gif(episode, by_task[task_id], output)
         assets[gif] = digest(output / gif)
         variables = recorded_case(ROOT / directory)['global_memory']
-        case_cards.append(case_card(episode, by_task[task_id], examples[task_id], variables, gif))
+        witness = None
+        if task_id in EVIDENCE_COMPARISON:
+            track(ROOT / directory / 'privileged.jsonl')
+            witness = recorded_witness(ROOT / directory)
+        case_cards.append(case_card(episode, by_task[task_id], examples[task_id], variables, gif, witness))
         gif_sources.append(source)
     if len(case_cards) != 8:
         raise ValueError('The task overview requires eight showcase cases')
