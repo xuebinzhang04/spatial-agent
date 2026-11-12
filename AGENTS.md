@@ -13,6 +13,10 @@ files are tracked in the intended checkout.
   `04_AgentTask/CustomAgentTasks/expectations.json`, and the relevant task or demo README.
 - Before executing an experiment, read `05_Experiment/RECORD_CONTRACT.md` and
   `05_Experiment/JOB_RUNBOOK.md`. Check live account and scheduler state before a paid job.
+  The user authorizes Slurm test jobs even when `hyakusage` reports $0 active
+  credits. Treat that balance as usage context, not a gate: submit a bounded job
+  and let Slurm accept or reject it. Record the requested limit, actual scheduler
+  state and elapsed usage; do not infer cost from the displayed balance.
 
 ## Current research loop
 
