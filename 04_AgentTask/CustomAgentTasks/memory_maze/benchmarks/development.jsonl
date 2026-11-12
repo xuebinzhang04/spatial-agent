@@ -1,0 +1,1 @@
+{"episode_id": "memory_maze_L1_seed42", "environment": "thor_tasks", "task_type": "memory_maze", "scene_id": "FloorPlan1", "seed": 42, "difficulty": 1, "instruction": "", "max_steps": 360, "task_config": {"split": "development", "image_size": 128, "exploration_budget": 12}}

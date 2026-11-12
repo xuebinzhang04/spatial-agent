@@ -1,0 +1,1 @@
+{"difficulty": 1, "environment": "shape3d", "episode_id": "development_0002", "instruction": "", "max_steps": 50, "scene_id": "procedural", "seed": 44, "task_config": {"image_size": 128, "split": "development"}, "task_type": "shape_identification"}

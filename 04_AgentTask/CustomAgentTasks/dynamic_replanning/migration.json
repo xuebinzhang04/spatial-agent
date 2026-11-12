@@ -1,0 +1,6 @@
+{
+  "status": "native_validated",
+  "source": "interaction_lab/tasks/dynamic_replanning",
+  "validation": "05_Experiment/results/native-migration-dynamic_replanning-372023/validation.json",
+  "original_entry_backup": "archive/agent-interaction/2026-10-19-symbolic-task-entries/dynamic_replanning"
+}

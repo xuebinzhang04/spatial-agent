@@ -1,0 +1,211 @@
+{
+  "schema": "spatial-task-variables/1",
+  "purpose": "Per-task split of environment variables into local state (what the policy observes at one step) and global memory (latent world variables the policy must build, update or keep frozen across steps). scripts/experiments/task_generation_audit.py extracts exactly these global-memory variables from generated cases and checks the control effects listed here.",
+  "shared": {
+    "local_state": {
+      "rgb": "Current egocentric RGB frame without identifier overlays",
+      "instruction": "Task goal plus current-stage text",
+      "phase": "Public task phase",
+      "action_history": "Policy's own parsed actions",
+      "memory": "Policy-written notebook (replaced by each action that carries memory)"
+    },
+    "controls": {
+      "seed": "Selects every random choice; identical recipes must regenerate identical variables and first frame",
+      "difficulty": "Structural level; its per-task effect is listed under controls.difficulty",
+      "max_steps": "Episode action budget; generators reject cases whose witness cannot fit",
+      "task_config.image_size": "Observation resolution (64..512)",
+      "task_config.start_pose": "AI2-THOR memory_maze/dependency_doors/relational_rearrangement/dynamic_replanning: 'fixed' (default, first sorted reachable position facing +z) or 'seeded' (seed-chosen position and heading from a separate random stream)"
+    },
+    "lifecycle_terms": {
+      "build": "Steps where the policy acquires the latent variables from observations",
+      "update": "Events after which remembered values become stale and must be revised",
+      "freeze": "Values that must stay fixed (or are committed) and are used as the evaluation reference"
+    }
+  },
+  "tasks": {
+    "missing_object": {
+      "local_state_extra": ["view_step", "feedback", "memory_checkpoint", "task_progress"],
+      "global_memory": {
+        "target_type": "Object type of the object that will be removed (hidden from the policy)",
+        "support_type": "Type of its supporting receptacle (the answer's previous_location)",
+        "target_visible_at_start": "Whether the target is visible from the initial camera view",
+        "target_distance_m": "Planar distance from the start pose to the target",
+        "exposed_objects": "Number of exposed pickupable objects on receptacles: the memory load a survey must cover",
+        "support_count": "Number of supporting receptacles of the target"
+      },
+      "lifecycle": {
+        "build": "Memorization stage: survey views and notebook entries of object-receptacle pairs",
+        "update": "None by the agent; the environment removes one object after MEMORIZE",
+        "freeze": "MEMORIZE freezes memory_checkpoint and the set of pre-change views that count as evidence"
+      },
+      "memory_reward": "Strict success needs the correct object and original receptacle, each referenced from pre-change pixels (pre_change_evidence)",
+      "controls": {
+        "difficulty": "L1: target bbox >= 100 px; L2: 8..1800 px and start view turned 120 degrees away; L3 rejected",
+        "task_config.memory_protocol": "active_scan_v1: target hidden at start, single visible support, explicit MEMORIZE, no automatic transition",
+        "task_config.exploration_budget": "Actions available before MEMORIZE must be issued",
+        "task_config.min_target_pixels / max_target_pixels / max_target_distance": "Target eligibility filters"
+      }
+    },
+    "moved_object": {
+      "local_state_extra": ["view_step", "feedback", "memory_checkpoint", "task_progress"],
+      "global_memory": {
+        "target_type": "Object type of the object that will be relocated",
+        "support_type": "Original supporting receptacle type (previous_location)",
+        "new_support_type": "Receptacle type after relocation (current_location)",
+        "target_visible_at_start": "Whether the target is visible from the initial camera view",
+        "target_distance_m": "Planar distance from the start pose to the target",
+        "relocation_distance_m": "Planar distance between the original and the planned new position",
+        "exposed_objects": "Number of exposed pickupable objects on receptacles",
+        "support_count": "Number of supporting receptacles of the target"
+      },
+      "lifecycle": {
+        "build": "Memorization stage: object-receptacle pairs",
+        "update": "After MEMORIZE the target's location changes; the policy must search and bind the new receptacle",
+        "freeze": "MEMORIZE freezes memory_checkpoint and the pre-change evidence views"
+      },
+      "memory_reward": "Strict success needs object, original receptacle (pre-change pixels) and new receptacle",
+      "controls": {
+        "difficulty": "L1/L2 as missing_object; L3 is the default moved-object level",
+        "task_config.memory_protocol": "active_scan_v1 as for missing_object",
+        "task_config.exploration_budget": "Actions available before MEMORIZE"
+      }
+    },
+    "shape_identification": {
+      "local_state_extra": [],
+      "global_memory": {
+        "voxels": "Number of cubes in the target shape",
+        "candidates": "Number of candidate shapes in the fixed panel",
+        "correct_index": "1-based panel position of the correct candidate",
+        "distinct_candidates": "Whether all candidates are distinct up to rotation",
+        "ambiguous_distractor": "Whether a distractor shares the target's front silhouette",
+        "initial_pixel_twins": "Wrong candidates whose initial target rendering is pixel-identical to the answer",
+        "witness_actions": "Length of the verified camera path that resolves the initial ambiguity (0 if not required)",
+        "initial_rotation_identity": "Whether the target starts in the canonical orientation",
+        "occlusion": "Occluder strength in the target view"
+      },
+      "lifecycle": {
+        "build": "Accumulate a 3D shape belief across camera viewpoints",
+        "update": "Each camera move adds evidence; the object itself never changes",
+        "freeze": "Candidate panel and target geometry are fixed for the episode"
+      },
+      "memory_reward": "SUBMIT_SHAPE accuracy; with require_initial_pixel_ambiguity a no-move guess is at most 1/(1+twins)",
+      "controls": {
+        "difficulty": "voxels = 5+L; candidates = min(5, 2+L); random initial rotation for L>1; occlusion 0.35 for L>=4",
+        "task_config.voxels / candidates / initial_rotation / occlusion": "Explicit overrides of the difficulty defaults",
+        "task_config.require_initial_pixel_ambiguity": "Admit only cases with a pixel-identical twin and a bounded revealing camera path"
+      }
+    },
+    "pose_alignment": {
+      "local_state_extra": [],
+      "global_memory": {
+        "voxels": "Number of cubes in the object",
+        "axes": "Allowed world rotation axes",
+        "alignment_length": "Shortest number of quarter turns from the start to the reference pose (symmetry-aware)",
+        "initially_aligned": "Whether the start pose already matches the reference",
+        "initial_rotation_identity": "Whether the object starts in the canonical orientation",
+        "occlusion": "Occluder strength in the target view"
+      },
+      "lifecycle": {
+        "build": "Estimate the object's current orientation relative to the reference",
+        "update": "Every OBJECT_ROTATE changes the object pose; camera moves change only the view",
+        "freeze": "Reference pose is fixed"
+      },
+      "memory_reward": "SUBMIT_POSE succeeds only at zero symmetry-aware rotation error",
+      "controls": {
+        "difficulty": "alignment_length = min(L, 3) quarter turns (3 is the cube-rotation diameter); voxels = 5+L; random start pose for L>1; occlusion 0.35 for L>=4",
+        "task_config.alignment_length": "Explicit rotation depth; capped by the deepest pose the allowed axes reach",
+        "task_config.axes": "Restricts rotation actions and reference generation to these axes",
+        "task_config.initial_rotation": "Index of the start orientation among the 24 cube rotations"
+      }
+    },
+    "memory_maze": {
+      "local_state_extra": ["view_step", "feedback"],
+      "global_memory": {
+        "landmark_types": "Types of the ordered landmarks to revisit",
+        "distinct_landmarks": "Number of distinct landmarks",
+        "returns_to_first": "Whether the order ends at the first landmark",
+        "publicly_describable": "Whether every landmark has a unique public description",
+        "visible_at_start": "Number of distinct landmarks visible from the start pose",
+        "min_landmark_spacing_m": "Smallest planar distance between two distinct landmarks",
+        "start_position": "Agent start position (x, z)"
+      },
+      "lifecycle": {
+        "build": "Exploration phase: landmark locations and routes",
+        "update": "Recall progress pointer advances after each correct MARK",
+        "freeze": "MEMORIZE freezes the notebook and returns the camera to the start"
+      },
+      "memory_reward": "Ordered visits; MARK needs the landmark visible within 1.6 m",
+      "controls": {
+        "difficulty": "distinct landmarks = min(4, 1+L); L>=2 returns to the first landmark",
+        "task_config.memory_protocol": "explicit_recall_v1 disables the automatic exploration-to-recall switch",
+        "task_config.exploration_budget": "Exploration actions"
+      }
+    },
+    "dependency_doors": {
+      "local_state_extra": ["view_step", "feedback"],
+      "global_memory": {
+        "orders": "Number of delivery orders",
+        "object_types": "Requested object types, in order",
+        "source_types": "Closed source container types",
+        "destination_types": "Destination surface types",
+        "sources_closed_at_start": "Whether every source container starts closed",
+        "object_inside_source": "Whether every object starts inside its source",
+        "closed_pickup_rejected": "Native check that pickup through a closed container fails"
+      },
+      "lifecycle": {
+        "build": "Locations of containers, items and destinations",
+        "update": "Container open/closed state, held object and delivered set change after every interaction",
+        "freeze": "Order list and destinations"
+      },
+      "memory_reward": "All orders delivered in sequence, sources closed, hand empty",
+      "controls": {
+        "difficulty": "orders = L (sources may be shared); if existing contents verify fewer than L dependencies, one accessible source is seeded with native pickup/put and verification repeats once"
+      }
+    },
+    "relational_rearrangement": {
+      "local_state_extra": ["view_step", "feedback"],
+      "global_memory": {
+        "target_type": "Object to move",
+        "anchor_type": "Anchor that defines the world-frame relation",
+        "relation_axes": "Signed world axes in the goal relation",
+        "near_metres": "Maximum anchor distance (null when unconstrained)",
+        "slots": "Number of placement slots on the surface",
+        "goal_witness_holds": "Recomputed relation holds at the goal witness slot",
+        "wrong_witness_fails": "Recomputed relation fails at the incorrect witness slot",
+        "satisfying_slots": "Number of slots satisfying the relation"
+      },
+      "lifecycle": {
+        "build": "World-frame compass, anchor position and slot layout",
+        "update": "Target becomes held, then placed",
+        "freeze": "Anchor and all other objects must remain unchanged (protected)"
+      },
+      "memory_reward": "Relation satisfied, protected objects preserved, hand empty",
+      "controls": {
+        "difficulty": "L1-L2: one signed axis; L3: two axes; L>=2 adds near <= 0.85 m",
+        "task_config.fixture_order": "'size' (default: smallest scene-unique props first) or 'seeded' (seed-shuffled anchor/target candidates)",
+        "task_config.max_satisfying_fraction": "Relations satisfied by at most this fraction of slots are tried first (default 0.5; 1.0 restores unordered selection)"
+      }
+    },
+    "dynamic_replanning": {
+      "local_state_extra": ["view_step", "feedback"],
+      "global_memory": {
+        "target_type": "Goal object type",
+        "obstacle_type": "Native object moved to block the original route",
+        "baseline_route_steps": "Shortest route length from the checkpoint before the change",
+        "detour_route_steps": "Shortest route length after the change",
+        "detour_extra_steps": "detour - baseline",
+        "intervention_planned": "Whether a natively verified blocking intervention exists (applied when the checkpoint is reached)"
+      },
+      "lifecycle": {
+        "build": "Route map while travelling to the checkpoint",
+        "update": "At the checkpoint an obstacle blocks an edge; the remembered route must be revised",
+        "freeze": "Goal identity"
+      },
+      "memory_reward": "Checkpoint reached, goal marked, finish at goal",
+      "controls": {
+        "difficulty": "baseline route >= 8+2L; detour >= baseline + min_detour_steps",
+        "task_config.min_detour_steps": "Minimum extra route length forced by the obstacle (default 2)"
+      }
+    }
+  }
+}

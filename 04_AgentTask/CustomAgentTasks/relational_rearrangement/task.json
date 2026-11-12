@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "name": "relational_rearrangement",
+  "title": "空间关系重排",
+  "description": "移动物体满足指定空间关系，同时保持锚点不变。",
+  "backend": "spatial_interaction",
+  "defaults": {
+    "seed": 42,
+    "difficulty": 1,
+    "split": "development"
+  },
+  "environment": "thor_tasks",
+  "task_type": "relational_rearrangement"
+}

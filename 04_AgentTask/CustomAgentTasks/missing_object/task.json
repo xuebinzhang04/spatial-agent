@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "name": "missing_object",
+  "title": "物体缺失检测",
+  "description": "记忆真实 iTHOR 场景，经过隐藏干预后识别被停用的物体及原位置。",
+  "backend": "spatial_interaction",
+  "defaults": {
+    "seed": 42,
+    "difficulty": 1,
+    "split": "development"
+  },
+  "environment": "dynamic_memory",
+  "task_type": "missing_object"
+}

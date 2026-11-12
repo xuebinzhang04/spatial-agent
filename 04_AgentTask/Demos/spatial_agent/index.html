@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Interactive spatial learning environments: task construction, recorded interaction examples, and verifiable outcomes.">
+  <title>SpatialAgent: Interactive Spatial Learning Environments</title>
+  <link rel="stylesheet" href="static/css/bulma.min.css">
+  <link rel="stylesheet" href="static/css/template.css">
+  <link rel="stylesheet" href="style.css">
+  <script defer src="catalog.js"></script>
+  <script defer src="cities.js"></script>
+  <script defer src="app.js"></script>
+  <script defer src="static/online.js"></script>
+  <script defer src="static/city.js"></script>
+  <script defer src="generation.js"></script>
+  <script defer src="static/generation.js"></script>
+  <script defer src="static/cases.js"></script>
+</head>
+<body>
+<nav class="paper-sidebar" aria-label="Section navigation">
+  <p>Contents</p>
+  <a href="#overview">Overview</a>
+  <a href="#tasks">Tasks &amp; example cases</a>
+  <a href="#explorer">Step through a case</a>
+  <a href="#appendix">Appendix</a>
+</nav>
+<main>
+  <!-- Publication header adapted from Academic Project Page Template. -->
+  <section id="project" class="hero publication-header">
+    <div class="hero-body">
+      <div class="container is-max-desktop has-text-centered">
+        <h1 class="title is-1 publication-title">SpatialAgent</h1>
+        <h2 class="subtitle is-3 publication-subtitle">Interactive tasks for training spatial memory</h2>
+        <div class="is-size-5 publication-authors"><span class="author-block">Research project · Work in progress</span></div>
+        <div class="publication-links">
+          <span class="link-block"><a href="#tasks" class="button is-normal is-rounded is-dark">Tasks &amp; cases</a></span>
+          <span class="link-block"><a href="#explorer" class="button is-normal is-rounded is-dark">Step through a case</a></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="overview" class="section hero is-light paper-introduction">
+    <div class="container is-max-desktop content">
+      <h2 class="title is-3 has-text-centered">Overview</h2>
+      <p>Spatial memory matters both when a model watches a scene passively and when it explores to finish a task. We build <strong>interactive</strong> tasks in which memory is necessary, on the hypothesis that interaction trains it better than passive viewing.</p>
+      <p>Each task separates the agent's <strong>local state</strong> (what it sees at one step) from a <strong>global memory</strong> it must <em>build</em>, <em>update</em> and <em>freeze</em> across steps. Every case is generated so that an information gap can only be closed by acting, and is scored by a verifiable environment check rather than by a judge. The goal is to use these tasks as reinforcement-learning environments and test transfer to spatial benchmarks such as VSI-Bench and Theory of Space.</p>
+      <div class="memory-legend">
+        <div><strong>Build</strong><span>observe and record object locations, routes or shape views</span></div>
+        <div><strong>Update</strong><span>the world or the agent's pose changes; stale memory must be revised</span></div>
+        <div><strong>Freeze</strong><span>a committed memory is the reference the answer is checked against</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="tasks" class="section">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3 has-text-centered">Tasks &amp; Example Cases</h2>
+      <p class="has-text-centered caption">One recorded case per task. "This case" values are the generated environment variables of that exact episode. Examples are executed by a privileged scripted policy to show the case design; they are not model results.</p>
+      <div class="case-list"><!-- TASK_CASES --></div>
+    </div>
+  </section>
+
+  <section id="explorer" class="section interaction-examples">
+    <div class="container is-max-desktop">
+      <h2 class="title is-3 has-text-centered">Step Through a Case</h2>
+      <p class="has-text-centered caption">Replay any recorded case frame by frame: observation, action, phase and reward. Model recordings (Qwen3.8-27B) can be compared with the scripted reference.</p>
+      <div class="selectors">
+        <label>Simulator <select id="environment-select" aria-label="Select simulator"></select></label>
+        <label>Task <select id="task-select" aria-label="Select recorded task"></select></label>
+        <label>Model <select id="agent-select" aria-label="Select recorded policy"></select></label>
+        <label>Case <select id="episode-select" aria-label="Select recorded case"></select></label>
+      </div>
+      <p id="selection-notice" role="status" aria-live="polite"></p>
+      <h3 id="task-title" class="title is-4">Loading examples…</h3>
+      <p id="scene-label" class="metadata"></p>
+      <div class="interaction-grid">
+        <div class="interaction-media">
+          <div id="model-exchange" class="model-exchange">
+            <section><h4 id="model-input-label">Model input</h4><pre id="model-input"></pre></section>
+            <section id="model-output-details"><h4>Model output</h4><pre id="model-output"></pre></section>
+          </div>
+          <div id="process-controls" hidden>
+            <label>Replay <select id="process-mode"><option value="continuous">Full process</option><option value="decisions">Decision snapshots</option></select></label>
+            <span id="process-caption" class="caption"></span>
+          </div>
+          <div id="delivery-process" hidden>
+            <video id="process-fpv" controls muted playsinline preload="metadata" aria-label="Full first-person delivery process"></video>
+            <label>Speed <select id="process-speed"><option value="1">1×</option><option value="2">2×</option><option value="4">4×</option></select></label>
+            <span id="process-time" class="caption"></span>
+            <details><summary>Recorded camera maps</summary><div class="process-maps">
+              <figure><video id="process-global" muted playsinline preload="metadata"></video><figcaption>Global map</figcaption></figure>
+              <figure><video id="process-local" muted playsinline preload="metadata"></video><figcaption>Local map</figcaption></figure>
+            </div></details>
+          </div>
+          <div class="view-controls" id="decision-view-controls" hidden>
+            <label>Camera <select id="view-select" aria-label="Select camera"></select></label>
+          </div>
+          <div id="viewport" class="observations">
+            <figure id="current-wrap"><span id="observation-phase" class="phase-badge"></span><img id="observation-image" alt="Recorded scene"></figure>
+            <p id="empty-state" hidden>No recording available for this task.</p>
+          </div>
+          <div class="playback" id="decision-playback">
+            <button id="previous-button" type="button">Previous</button>
+            <button id="play-button" type="button">Play / pause</button>
+            <button id="next-button" type="button">Next</button>
+            <input id="timeline" type="range" min="0" max="1" value="0" aria-label="Episode step">
+            <span id="step-counter"></span>
+            <select id="speed-select" aria-label="Playback interval"><option value="1400">1.4 s/step</option><option value="750" selected>0.75 s/step</option><option value="350">0.35 s/step</option></select>
+            <button id="end-button" type="button">End</button>
+          </div>
+        </div>
+        <aside class="interaction-state" aria-label="Task and current state">
+          <p id="episode-status" role="status"></p>
+          <p class="action"><code id="action-label"></code> <span id="action-index"></span></p>
+          <h4>Objective</h4><ol id="objective-list"></ol>
+          <dl><dt>Policy</dt><dd id="state-agent"></dd><dt>Phase</dt><dd id="state-phase"></dd><dt>Actions left</dt><dd id="state-budget"></dd><dt>Reward</dt><dd id="state-reward"></dd></dl>
+          <p id="state-resources"></p>
+          <p id="state-memory" hidden></p>
+          <p id="policy-note" class="caption"></p>
+          <details><summary>Difficulty</summary><p id="demo-difficulty"></p><div id="case-difficulty"></div></details>
+        </aside>
+      </div>
+    <details id="delivery-map-tools" class="delivery-map-tools">
+      <summary>Delivery map and state</summary>
+      <p>Source-map exploration is illustrative. It does not move the online simulator or change its map.</p>
+      <div class="selectors"><label>City <select id="city-select"></select></label><label><input id="city-buildings" type="checkbox" checked> Buildings</label><label><input id="city-pois" type="checkbox" checked> POIs</label><button id="city-reset" type="button">Reset diagram</button></div>
+      <svg id="city-map" viewBox="0 0 1000 650" aria-label="DeliveryBench source city map"><g id="city-scene"></g></svg>
+      <p id="city-selection"></p><button id="city-route" type="button">Estimate road-centre route</button> <button id="city-move" type="button">Move diagram position</button> <button id="city-send" type="button">Copy MOVE command to online controls</button>
+      <label><input id="city-follow" type="checkbox" checked> Follow recorded courier</label>
+      <h4>Recorded environment state</h4><pre id="city-recorded-state">Select a DeliveryBench recording to inspect its public state.</pre>
+      <details><summary>Interactive route and resource estimates</summary><label>Diagram battery % <input id="city-battery" type="number" min="0" max="100" value="50"></label><pre id="city-state"></pre></details>
+      <details><summary>DeliveryBench native action API</summary><pre id="city-api"></pre></details>
+    </details>
+      <details id="demo-parameters" class="demo-parameters">
+        <summary>Task and environment details</summary>
+        <dl class="task-details"><dt>Definition</dt><dd id="demo-definition"></dd><dt>Objective</dt><dd id="demo-objective"></dd><dt>Actions</dt><dd id="demo-actions"></dd><dt>Verification</dt><dd id="demo-verification"></dd><dt>Limitations</dt><dd id="demo-limits"></dd><dt>Simulator</dt><dd id="demo-simulator"></dd></dl>
+        <div class="table-container"><table class="table is-fullwidth"><thead><tr><th>Variable</th><th>Role</th><th>Definition / control</th></tr></thead><tbody id="demo-variables"></tbody></table></div>
+      </details>
+      <details id="record-details">
+        <summary>Recording and evaluation</summary>
+        <p id="model-caption" class="caption"></p>
+        <pre id="provenance-content"></pre>
+        <h4>Current transition</h4><pre id="step-record"></pre>
+      </details>
+    </div>
+  </section>
+
+  <div id="appendix" class="appendix container is-max-desktop">
+  <h2 class="title is-3 has-text-centered">Appendix</h2>
+  <details class="appendix-item"><summary>Generation audit: controls, memory variables and checks for every generated case</summary>
+  <section id="task-generation" class="section"><div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">Task Generation &amp; Memory Variables</h2>
+    <p>Spatial memory is needed both when watching passively and when exploring to complete a task; interaction is meant to strengthen it. Each task therefore separates the <strong>local state</strong> a policy observes at one step from the <strong>global memory</strong> it must build, update and keep frozen across steps (as in Theory of Space, where belief is built, revised and frozen). Each task's global memory needs well-defined environment variables and a way to score them. Here every generated case is audited from its <em>controls</em> (seed, level, configuration) to the global-memory variables it produces. Checks verify that each control has its declared effect, that the same recipe regenerates the same case, and that the variables admit the intended memory use. A <span class="gen-warn">warning</span> marks an admissible case that is weak for memory training.</p>
+    <div class="selectors"><label>Task <select id="generation-task" aria-label="Select task for generation audit"></select></label></div>
+    <div id="generation-body"><p>No generation audit is bundled with this build.</p></div>
+    <p class="caption">Global-memory values are evaluator-side variables shown for research presentation; policies never receive them. Recorded episodes may predate current generation protocols; fresh generation reflects the current code.</p>
+  </div></section>
+
+  </details>
+  <details class="appendix-item"><summary>Online demo: run a simulator or model service from this page</summary>
+  <section id="online-demo" class="section"><div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">Online Demo</h2>
+    <p>Model execution and presentation are separate: an inference worker runs the model in an environment; this interface reads its public inputs, outputs and transitions. In interactive mode, the same interface can also request individual actions.</p>
+    <div id="online-controls">
+      <div class="selectors"><label>Simulator <select id="online-environment"></select></label><label>Task <select id="online-task"></select></label><label>Policy / model <select id="online-model"><option value="manual">Manual API</option></select></label></div>
+      <p id="online-model-status" role="status"></p>
+      <div class="selectors"><label>Inference service <input id="online-model-url" type="url" value="http://127.0.0.1:8000/v1"></label><button id="online-connect" type="button">Connect selected model</button></div>
+      <p class="caption">Downloaded checkpoints are selectable independently of service availability. Connecting checks the served model ID; loading weights belongs to the model runtime.</p>
+      <p id="online-description"></p>
+      <div class="selectors"><label>Seed <input id="online-seed" type="number" value="42" min="0"></label><label>Structural level <input id="online-level" type="number" value="1" min="1" max="5"></label><label>Scene <input id="online-scene" value="FloorPlan1"></label></div>
+      <button id="online-reset" type="button">Create / reset task</button> <button id="online-refresh" type="button">Read environment state</button> <label><input id="online-follow" type="checkbox"> Follow worker output</label>
+      <details><summary>Current action API</summary><pre id="online-api"></pre></details>
+      <label for="online-action">One JSON action, or one native Delivery command</label><textarea id="online-action" rows="3">{"action":"CAMERA_RIGHT"}</textarea>
+      <div class="selectors"><button id="online-step" type="button">Execute action</button><button id="online-infer" type="button">Model: propose action</button><button id="online-model-step" type="button">Model: infer and execute one step</button><button id="online-stop" type="button">Stop session</button></div>
+      <p id="online-status" role="status">Start run.py to use the online API. Native simulators require an allocated runtime; model inference uses an existing configured service.</p>
+    </div>
+    <details><summary>Online inference response</summary><pre id="online-model-response"></pre></details>
+  </div></section>
+
+  </details>
+  <details class="appendix-item"><summary>Research notes and current evidence</summary>
+  <section id="research-notes" class="section research-notes"><div class="container is-max-desktop content">
+    <h2 class="title is-3 has-text-centered">Research Notes</h2>
+    <h3 id="construction" class="title is-4">Task Construction and Verification</h3>
+    <p>Task generation combines scene parameters and interaction requirements, validates the initial state and feasible execution, and binds an explicit correctness predicate. For example, container retrieval requires opening the source before pickup and restoring closure; relational placement must also preserve protected objects. Dynamic replanning requires a physically verified obstruction and an executable detour.</p>
+    <p>Structural levels increase requirements such as ordered visits, retrieval orders, or conjunctive spatial relations. Their empirical difficulty still needs calibration through repeated policy rollouts. The intended learning loop is generation, interaction, verification, difficulty calibration, and training, followed by evaluation on held-out instances.</p>
+
+    <h3 id="results" class="title is-4">Current Evidence and Next Experiments</h3>
+    <p>The catalog contains <span id="stat-tasks"></span> task families with <span id="stat-episodes"></span> recordings, including <span id="stat-model"></span> model recordings. Oracle trajectories use privileged state and establish feasibility. The historical spatial smoke attempts have no strict successes; a fixed courier case has a separately verified Qwen completion. These development examples do not constitute a controlled policy comparison. Difficulty calibration, RL training, and transfer evaluation remain future work.</p>
+    <p><strong>Diagnostic example.</strong> In one Qwen3.8-27B missing-object attempt, the model identifies the change but reports the previous location incorrectly. Reward is 0.925 while strict success is false. This motivates evaluating complete spatial objectives alongside partial progress.</p>
+    <p><strong>Next experiments.</strong> Compare matched task instances and budgets with memory retained or cleared, containers initially open or closed, and a checkpoint event present or absent. Then calibrate difficulty and test RL on held-out scenes and task compositions.</p>
+    <h3 class="title is-4">Related Projects</h3>
+    <p><a href="https://vlm-3r.github.io/">VLM-3R</a> · <a href="https://deliverybench.github.io/">DeliveryBench</a> · <a href="https://phai-lab.github.io/research.html">PHAI research</a></p>
+    </div>
+  </section>
+  </details>
+  </div>
+</main>
+<footer class="footer">
+  <div class="container"><div class="columns is-centered"><div class="column is-8"><div class="content">
+    <p>This page adapts the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template">Academic Project Page Template</a>, derived from <a href="https://nerfies.github.io/">Nerfies</a>. The adapted page layout is licensed under <a rel="license" href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>. <a href="static/TEMPLATE.md">Template sources and notices</a>.</p>
+  </div></div></div></div>
+</footer>
+
+<noscript>JavaScript is needed to replay the examples. Recorded data is available in data/catalog.json.</noscript>
+</body>
+</html>

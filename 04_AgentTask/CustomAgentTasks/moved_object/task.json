@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "name": "moved_object",
+  "title": "物体移动检测",
+  "description": "记忆真实 iTHOR 场景，识别被移动物体及其前后 receptacle。",
+  "backend": "spatial_interaction",
+  "defaults": {
+    "seed": 42,
+    "difficulty": 3,
+    "split": "development"
+  },
+  "environment": "dynamic_memory",
+  "task_type": "moved_object"
+}

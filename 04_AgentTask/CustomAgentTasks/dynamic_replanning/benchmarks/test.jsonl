@@ -1,0 +1,1 @@
+{"episode_id": "dynamic_replanning_L3_seed44", "environment": "thor_tasks", "task_type": "dynamic_replanning", "scene_id": "FloorPlan3", "seed": 44, "difficulty": 3, "instruction": "", "max_steps": 360, "task_config": {"split": "test", "image_size": 128, "exploration_budget": 12}}

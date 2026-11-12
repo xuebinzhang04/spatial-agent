@@ -1,0 +1,1 @@
+{"difficulty": 1, "environment": "dynamic_memory", "episode_id": "validation_0000", "instruction": "", "max_steps": 50, "scene_id": "FloorPlan2", "seed": 1000042, "task_config": {"exploration_budget": 12, "image_size": 128}, "task_type": "missing_object"}

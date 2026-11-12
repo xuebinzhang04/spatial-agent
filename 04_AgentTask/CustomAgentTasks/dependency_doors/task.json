@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "name": "dependency_doors",
+  "title": "真实容器访问依赖与物体检索",
+  "description": "先打开真实关闭容器，再取出并配送物体，最后关闭使用过的容器。",
+  "backend": "spatial_interaction",
+  "defaults": {
+    "seed": 42,
+    "difficulty": 1,
+    "split": "development"
+  },
+  "environment": "thor_tasks",
+  "task_type": "dependency_doors"
+}

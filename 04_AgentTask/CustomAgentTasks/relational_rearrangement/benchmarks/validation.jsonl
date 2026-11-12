@@ -1,0 +1,1 @@
+{"episode_id": "relational_rearrangement_L2_seed43", "environment": "thor_tasks", "task_type": "relational_rearrangement", "scene_id": "FloorPlan2", "seed": 43, "difficulty": 2, "instruction": "", "max_steps": 360, "task_config": {"split": "validation", "image_size": 128, "exploration_budget": 12}}

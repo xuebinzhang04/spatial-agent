@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "name": "dynamic_replanning",
+  "title": "动态路径重规划",
+  "description": "发现路径封闭后重新规划并完成有序导航目标。",
+  "backend": "spatial_interaction",
+  "defaults": {
+    "seed": 42,
+    "difficulty": 1,
+    "split": "development"
+  },
+  "environment": "thor_tasks",
+  "task_type": "dynamic_replanning"
+}

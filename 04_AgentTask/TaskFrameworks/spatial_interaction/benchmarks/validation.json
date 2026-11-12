@@ -1,0 +1,606 @@
+{
+  "completed": true,
+  "unit_tests": {
+    "exit_code": 0,
+    "log": "tests.log"
+  },
+  "oracles": [
+    {
+      "episode_id": "development_0000",
+      "task_type": "missing_object",
+      "policy": "oracle",
+      "seed": 42,
+      "terminated": true,
+      "truncated": false,
+      "reward": 0.994,
+      "metrics": {
+        "change_precision": 1.0,
+        "change_recall": 1.0,
+        "change_f1": 1.0,
+        "change_type_accuracy": 1.0,
+        "previous_location_accuracy": 1.0,
+        "current_location_accuracy": 1.0,
+        "success": true,
+        "environment_actions": 3,
+        "exploration_efficiency": 0.3333333333333333,
+        "episode_reward": 0.994
+      },
+      "oracle_uses_privileged_state": true
+    },
+    {
+      "episode_id": "development_0001",
+      "task_type": "moved_object",
+      "policy": "oracle",
+      "seed": 43,
+      "terminated": true,
+      "truncated": false,
+      "reward": 0.994,
+      "metrics": {
+        "change_precision": 1.0,
+        "change_recall": 1.0,
+        "change_f1": 1.0,
+        "change_type_accuracy": 1.0,
+        "previous_location_accuracy": 1.0,
+        "current_location_accuracy": 1.0,
+        "success": true,
+        "environment_actions": 3,
+        "exploration_efficiency": 0.3333333333333333,
+        "episode_reward": 0.994
+      },
+      "oracle_uses_privileged_state": true
+    },
+    {
+      "episode_id": "development_0002",
+      "task_type": "shape_identification",
+      "policy": "oracle",
+      "seed": 44,
+      "terminated": true,
+      "truncated": false,
+      "reward": 0.996,
+      "metrics": {
+        "success": true,
+        "camera_actions": 1,
+        "object_rotations": 0,
+        "total_steps": 2,
+        "environment_actions": 2,
+        "viewpoints_used": 2,
+        "occlusion": 0.0,
+        "shape_accuracy": 1.0
+      },
+      "oracle_uses_privileged_state": true
+    },
+    {
+      "episode_id": "development_0003",
+      "task_type": "pose_alignment",
+      "policy": "oracle",
+      "seed": 45,
+      "terminated": true,
+      "truncated": false,
+      "reward": 0.992,
+      "metrics": {
+        "success": true,
+        "camera_actions": 1,
+        "object_rotations": 2,
+        "total_steps": 4,
+        "environment_actions": 4,
+        "viewpoints_used": 2,
+        "occlusion": 0.0,
+        "rotation_error_degrees": 0.0
+      },
+      "oracle_uses_privileged_state": true
+    },
+    {
+      "episode_id": "validation_0000",
+      "task_type": "missing_object",
+      "policy": "oracle",
+      "seed": 1000042,
+      "terminated": true,
+      "truncated": false,
+      "reward": 0.994,
+      "metrics": {
+        "change_precision": 1.0,
+        "change_recall": 1.0,
+        "change_f1": 1.0,
+        "change_type_accuracy": 1.0,
+        "previous_location_accuracy": 1.0,
+        "current_location_accuracy": 1.0,
+        "success": true,
+        "environment_actions": 3,
+        "exploration_efficiency": 0.3333333333333333,
+        "episode_reward": 0.994
+      },
+      "oracle_uses_privileged_state": true
+    },
+    {
+      "episode_id": "validation_0001",
+      "task_type": "moved_object",
+      "policy": "oracle",
+      "seed": 1000043,
+      "terminated": true,
+      "truncated": false,
+      "reward": 0.994,
+      "metrics": {
+        "change_precision": 1.0,
+        "change_recall": 1.0,
+        "change_f1": 1.0,
+        "change_type_accuracy": 1.0,
+        "previous_location_accuracy": 1.0,
+        "current_location_accuracy": 1.0,
+        "success": true,
+        "environment_actions": 3,
+        "exploration_efficiency": 0.3333333333333333,
+        "episode_reward": 0.994
+      },
+      "oracle_uses_privileged_state": true
+    },
+    {
+      "episode_id": "validation_0002",
+      "task_type": "shape_identification",
+      "policy": "oracle",
+      "seed": 1000044,
+      "terminated": true,
+      "truncated": false,
+      "reward": 0.996,
+      "metrics": {
+        "success": true,
+        "camera_actions": 1,
+        "object_rotations": 0,
+        "total_steps": 2,
+        "environment_actions": 2,
+        "viewpoints_used": 2,
+        "occlusion": 0.0,
+        "shape_accuracy": 1.0
+      },
+      "oracle_uses_privileged_state": true
+    },
+    {
+      "episode_id": "validation_0003",
+      "task_type": "pose_alignment",
+      "policy": "oracle",
+      "seed": 1000045,
+      "terminated": true,
+      "truncated": false,
+      "reward": 0.992,
+      "metrics": {
+        "success": true,
+        "camera_actions": 1,
+        "object_rotations": 2,
+        "total_steps": 4,
+        "environment_actions": 4,
+        "viewpoints_used": 2,
+        "occlusion": 0.0,
+        "rotation_error_degrees": 0.0
+      },
+      "oracle_uses_privileged_state": true
+    },
+    {
+      "episode_id": "test_0000",
+      "task_type": "missing_object",
+      "policy": "oracle",
+      "seed": 2000042,
+      "terminated": true,
+      "truncated": false,
+      "reward": 0.994,
+      "metrics": {
+        "change_precision": 1.0,
+        "change_recall": 1.0,
+        "change_f1": 1.0,
+        "change_type_accuracy": 1.0,
+        "previous_location_accuracy": 1.0,
+        "current_location_accuracy": 1.0,
+        "success": true,
+        "environment_actions": 3,
+        "exploration_efficiency": 0.3333333333333333,
+        "episode_reward": 0.994
+      },
+      "oracle_uses_privileged_state": true
+    },
+    {
+      "episode_id": "test_0001",
+      "task_type": "moved_object",
+      "policy": "oracle",
+      "seed": 2000043,
+      "terminated": true,
+      "truncated": false,
+      "reward": 0.994,
+      "metrics": {
+        "change_precision": 1.0,
+        "change_recall": 1.0,
+        "change_f1": 1.0,
+        "change_type_accuracy": 1.0,
+        "previous_location_accuracy": 1.0,
+        "current_location_accuracy": 1.0,
+        "success": true,
+        "environment_actions": 3,
+        "exploration_efficiency": 0.3333333333333333,
+        "episode_reward": 0.994
+      },
+      "oracle_uses_privileged_state": true
+    },
+    {
+      "episode_id": "test_0002",
+      "task_type": "shape_identification",
+      "policy": "oracle",
+      "seed": 2000044,
+      "terminated": true,
+      "truncated": false,
+      "reward": 0.996,
+      "metrics": {
+        "success": true,
+        "camera_actions": 1,
+        "object_rotations": 0,
+        "total_steps": 2,
+        "environment_actions": 2,
+        "viewpoints_used": 2,
+        "occlusion": 0.0,
+        "shape_accuracy": 1.0
+      },
+      "oracle_uses_privileged_state": true
+    },
+    {
+      "episode_id": "test_0003",
+      "task_type": "pose_alignment",
+      "policy": "oracle",
+      "seed": 2000045,
+      "terminated": true,
+      "truncated": false,
+      "reward": 0.992,
+      "metrics": {
+        "success": true,
+        "camera_actions": 1,
+        "object_rotations": 2,
+        "total_steps": 4,
+        "environment_actions": 4,
+        "viewpoints_used": 2,
+        "occlusion": 0.0,
+        "rotation_error_degrees": 0.0
+      },
+      "oracle_uses_privileged_state": true
+    }
+  ],
+  "random": [
+    {
+      "episode_id": "development_0000",
+      "task_type": "missing_object",
+      "policy": "random",
+      "seed": 42,
+      "terminated": true,
+      "truncated": false,
+      "reward": -0.0375,
+      "metrics": {
+        "change_precision": 0.0,
+        "change_recall": 0.0,
+        "change_f1": 0.0,
+        "change_type_accuracy": 0.0,
+        "previous_location_accuracy": 0.0,
+        "current_location_accuracy": 1.0,
+        "success": false,
+        "environment_actions": 6,
+        "exploration_efficiency": 0.0,
+        "episode_reward": -0.037500000000000006
+      },
+      "oracle_uses_privileged_state": false
+    },
+    {
+      "episode_id": "development_0001",
+      "task_type": "moved_object",
+      "policy": "random",
+      "seed": 43,
+      "terminated": true,
+      "truncated": false,
+      "reward": -0.06874999999999999,
+      "metrics": {
+        "change_precision": 0.0,
+        "change_recall": 0.0,
+        "change_f1": 0.0,
+        "change_type_accuracy": 0.0,
+        "previous_location_accuracy": 0.0,
+        "current_location_accuracy": 0.0,
+        "success": false,
+        "environment_actions": 11,
+        "exploration_efficiency": 0.0,
+        "episode_reward": -0.06875
+      },
+      "oracle_uses_privileged_state": false
+    },
+    {
+      "episode_id": "development_0002",
+      "task_type": "shape_identification",
+      "policy": "random",
+      "seed": 44,
+      "terminated": true,
+      "truncated": false,
+      "reward": -0.049999999999999996,
+      "metrics": {
+        "success": false,
+        "camera_actions": 7,
+        "object_rotations": 0,
+        "total_steps": 8,
+        "environment_actions": 8,
+        "viewpoints_used": 8,
+        "occlusion": 0.0,
+        "shape_accuracy": 0.0
+      },
+      "oracle_uses_privileged_state": false
+    },
+    {
+      "episode_id": "development_0003",
+      "task_type": "pose_alignment",
+      "policy": "random",
+      "seed": 45,
+      "terminated": false,
+      "truncated": true,
+      "reward": -0.10000000000000002,
+      "metrics": {
+        "success": false,
+        "camera_actions": 4,
+        "object_rotations": 12,
+        "total_steps": 16,
+        "environment_actions": 16,
+        "viewpoints_used": 4,
+        "occlusion": 0.0
+      },
+      "oracle_uses_privileged_state": false
+    },
+    {
+      "episode_id": "validation_0000",
+      "task_type": "missing_object",
+      "policy": "random",
+      "seed": 1000042,
+      "terminated": false,
+      "truncated": true,
+      "reward": -0.10000000000000002,
+      "metrics": {
+        "success": false,
+        "environment_actions": 16
+      },
+      "oracle_uses_privileged_state": false
+    },
+    {
+      "episode_id": "validation_0001",
+      "task_type": "moved_object",
+      "policy": "random",
+      "seed": 1000043,
+      "terminated": true,
+      "truncated": false,
+      "reward": -0.03125,
+      "metrics": {
+        "change_precision": 0.0,
+        "change_recall": 0.0,
+        "change_f1": 0.0,
+        "change_type_accuracy": 0.0,
+        "previous_location_accuracy": 0.0,
+        "current_location_accuracy": 0.0,
+        "success": false,
+        "environment_actions": 5,
+        "exploration_efficiency": 0.0,
+        "episode_reward": -0.03125
+      },
+      "oracle_uses_privileged_state": false
+    },
+    {
+      "episode_id": "validation_0002",
+      "task_type": "shape_identification",
+      "policy": "random",
+      "seed": 1000044,
+      "terminated": true,
+      "truncated": false,
+      "reward": -0.00625,
+      "metrics": {
+        "success": false,
+        "camera_actions": 0,
+        "object_rotations": 0,
+        "total_steps": 1,
+        "environment_actions": 1,
+        "viewpoints_used": 1,
+        "occlusion": 0.0,
+        "shape_accuracy": 0.0
+      },
+      "oracle_uses_privileged_state": false
+    },
+    {
+      "episode_id": "validation_0003",
+      "task_type": "pose_alignment",
+      "policy": "random",
+      "seed": 1000045,
+      "terminated": true,
+      "truncated": false,
+      "reward": -0.06249999999999999,
+      "metrics": {
+        "success": false,
+        "camera_actions": 4,
+        "object_rotations": 5,
+        "total_steps": 10,
+        "environment_actions": 10,
+        "viewpoints_used": 4,
+        "occlusion": 0.0,
+        "rotation_error_degrees": 180.0
+      },
+      "oracle_uses_privileged_state": false
+    },
+    {
+      "episode_id": "test_0000",
+      "task_type": "missing_object",
+      "policy": "random",
+      "seed": 2000042,
+      "terminated": true,
+      "truncated": false,
+      "reward": -0.03125,
+      "metrics": {
+        "change_precision": 0.0,
+        "change_recall": 0.0,
+        "change_f1": 0.0,
+        "change_type_accuracy": 0.0,
+        "previous_location_accuracy": 0.0,
+        "current_location_accuracy": 1.0,
+        "success": false,
+        "environment_actions": 5,
+        "exploration_efficiency": 0.0,
+        "episode_reward": -0.03125
+      },
+      "oracle_uses_privileged_state": false
+    },
+    {
+      "episode_id": "test_0001",
+      "task_type": "moved_object",
+      "policy": "random",
+      "seed": 2000043,
+      "terminated": true,
+      "truncated": false,
+      "reward": -0.075,
+      "metrics": {
+        "change_precision": 0.0,
+        "change_recall": 0.0,
+        "change_f1": 0.0,
+        "change_type_accuracy": 0.0,
+        "previous_location_accuracy": 0.0,
+        "current_location_accuracy": 0.0,
+        "success": false,
+        "environment_actions": 12,
+        "exploration_efficiency": 0.0,
+        "episode_reward": -0.07500000000000001
+      },
+      "oracle_uses_privileged_state": false
+    },
+    {
+      "episode_id": "test_0002",
+      "task_type": "shape_identification",
+      "policy": "random",
+      "seed": 2000044,
+      "terminated": true,
+      "truncated": false,
+      "reward": -0.00625,
+      "metrics": {
+        "success": false,
+        "camera_actions": 0,
+        "object_rotations": 0,
+        "total_steps": 1,
+        "environment_actions": 1,
+        "viewpoints_used": 1,
+        "occlusion": 0.0,
+        "shape_accuracy": 0.0
+      },
+      "oracle_uses_privileged_state": false
+    },
+    {
+      "episode_id": "test_0003",
+      "task_type": "pose_alignment",
+      "policy": "random",
+      "seed": 2000045,
+      "terminated": true,
+      "truncated": false,
+      "reward": -0.10000000000000002,
+      "metrics": {
+        "success": false,
+        "camera_actions": 9,
+        "object_rotations": 6,
+        "total_steps": 16,
+        "environment_actions": 16,
+        "viewpoints_used": 9,
+        "occlusion": 0.0,
+        "rotation_error_degrees": 120.00000000000001
+      },
+      "oracle_uses_privileged_state": false
+    }
+  ],
+  "replays": [
+    {
+      "episode_id": "development_0000",
+      "replayed_steps": 3,
+      "verified": true,
+      "exact_pixels": false,
+      "max_pixel_error": 2,
+      "max_mean_pixel_error": 0.12117513020833333
+    },
+    {
+      "episode_id": "development_0001",
+      "replayed_steps": 3,
+      "verified": true,
+      "exact_pixels": false,
+      "max_pixel_error": 3,
+      "max_mean_pixel_error": 0.15610758463541666
+    },
+    {
+      "episode_id": "development_0002",
+      "replayed_steps": 2,
+      "verified": true,
+      "exact_pixels": true,
+      "max_pixel_error": 0,
+      "max_mean_pixel_error": 0.0
+    },
+    {
+      "episode_id": "development_0003",
+      "replayed_steps": 4,
+      "verified": true,
+      "exact_pixels": true,
+      "max_pixel_error": 0,
+      "max_mean_pixel_error": 0.0
+    },
+    {
+      "episode_id": "validation_0000",
+      "replayed_steps": 3,
+      "verified": true,
+      "exact_pixels": false,
+      "max_pixel_error": 3,
+      "max_mean_pixel_error": 0.13883463541666666
+    },
+    {
+      "episode_id": "validation_0001",
+      "replayed_steps": 3,
+      "verified": true,
+      "exact_pixels": false,
+      "max_pixel_error": 3,
+      "max_mean_pixel_error": 0.12164306640625
+    },
+    {
+      "episode_id": "validation_0002",
+      "replayed_steps": 2,
+      "verified": true,
+      "exact_pixels": true,
+      "max_pixel_error": 0,
+      "max_mean_pixel_error": 0.0
+    },
+    {
+      "episode_id": "validation_0003",
+      "replayed_steps": 4,
+      "verified": true,
+      "exact_pixels": true,
+      "max_pixel_error": 0,
+      "max_mean_pixel_error": 0.0
+    },
+    {
+      "episode_id": "test_0000",
+      "replayed_steps": 3,
+      "verified": true,
+      "exact_pixels": true,
+      "max_pixel_error": 0,
+      "max_mean_pixel_error": 0.0
+    },
+    {
+      "episode_id": "test_0001",
+      "replayed_steps": 3,
+      "verified": true,
+      "exact_pixels": true,
+      "max_pixel_error": 0,
+      "max_mean_pixel_error": 0.0
+    },
+    {
+      "episode_id": "test_0002",
+      "replayed_steps": 2,
+      "verified": true,
+      "exact_pixels": true,
+      "max_pixel_error": 0,
+      "max_mean_pixel_error": 0.0
+    },
+    {
+      "episode_id": "test_0003",
+      "replayed_steps": 4,
+      "verified": true,
+      "exact_pixels": true,
+      "max_pixel_error": 0,
+      "max_mean_pixel_error": 0.0
+    }
+  ],
+  "artifact_root": "/gpfs/scrubbed/xuebiz/SpatialAgent/05_Experiment/results/stage1-final-20261019",
+  "verified_source_files": 32
+}

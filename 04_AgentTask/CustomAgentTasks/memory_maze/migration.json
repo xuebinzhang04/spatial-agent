@@ -1,0 +1,6 @@
+{
+  "status": "native_validated",
+  "source": "interaction_lab/tasks/memory_maze",
+  "validation": "05_Experiment/results/native-migration-memory_maze-371491/validation.json",
+  "original_entry_backup": "archive/agent-interaction/2026-10-19-symbolic-task-entries/memory_maze"
+}

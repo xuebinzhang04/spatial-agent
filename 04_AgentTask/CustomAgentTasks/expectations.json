@@ -1,0 +1,77 @@
+{
+  "schema": "spatial-task-expectations/1",
+  "status": "Development acceptance criteria; not measured difficulty or proof of admission",
+  "shared": {
+    "design": "Create an information gap that useful interaction resolves; do not reward motion counts as evidence of ability.",
+    "public_boundary": "Unnumbered object RGB; no simulator object IDs in instructions, notebook, feedback or submitted public action references. Candidate choices and placement slots are action controls, not object identity overlays.",
+    "case_review": "Compare expected behavior with recorded observations, actions, transitions and state. Separate environment design, prompt, harness memory, policy and infrastructure failures. Preserve failed cases.",
+    "difficulty": "Calibrate levels with repeated matched policy runs; a feasible privileged witness is insufficient.",
+    "promotion": "Fresh reset and verified execution, public-reference replay, explicit shortcut controls, no identifier overlays, and a documented expectation review. A generated recipe alone cannot replace a demo."
+  },
+  "tasks": {
+    "missing_object": {
+      "ability": "Actively survey object-location pairs, commit memory, revisit and identify an actual absence.",
+      "expected": ["Explore beyond the initial view before MEMORIZE", "Retain cumulative object and supporting-receptacle evidence", "Revisit after the change and submit both object and original receptacle"],
+      "necessary_setting": "Preselect an exposed target outside the initial view, with a discoverable observation and support reference. For travel cases, stationary camera rotations must remain insufficient.",
+      "shortcut_controls": ["Initial-view-only inspection cannot observe the target", "Immediate commit fails the pre-change evidence requirement", "No automatic successful memory transition"],
+      "review_risks": ["Pitch oscillation without new evidence", "Memory overwritten by intent text", "Correct object but wrong support", "Whole-room survey budget lacks a bounded observable scope"],
+      "implementation": "active_scan_v1 adds hidden start, explicit commitment, clocks, frozen notebook and strict evidence-aware reward. Translation necessity and full survey feasibility still require native admission."
+    },
+    "moved_object": {
+      "ability": "Discriminate object relocation from camera movement and bind old/new locations.",
+      "expected": ["Survey before commitment", "Search beyond the original support after relocation", "Report object and both receptacles with observed references"],
+      "necessary_setting": "Discoverable original and relocated views, spatially distinct receptacles, and no one-image before/after shortcut.",
+      "shortcut_controls": ["Original image alone cannot identify the new support", "Immediate commit lacks original object/support evidence", "Incorrect destination fails strict success"],
+      "review_risks": ["Repeated search at the original position", "Unseen new receptacle", "Camera reset confused with object movement"],
+      "implementation": "Shares active_scan_v1; relocation preflight already checks a reachable target view. New cases and observation-limited search budgets need validation."
+    },
+    "shape_identification": {
+      "ability": "Select a viewpoint that resolves a specific shape ambiguity.",
+      "expected": ["Move to expose distinguishing geometry", "Compare evidence with candidate views", "Submit the supported candidate"],
+      "necessary_setting": "At least two candidate geometries produce identical initial target pixels under the actual camera/renderer, and an available camera sequence distinguishes them.",
+      "shortcut_controls": ["Compare actual initial rendered target pixels, not only orthographic silhouettes", "Verify a reachable distinguishing view", "Keep reference candidate panel constant across the ambiguity pair"],
+      "review_risks": ["Yaw oscillation pointing away from the target", "Candidate already recognizable initially", "Random camera motion credited as active perception"],
+      "implementation": "New required-ambiguity generation constructs hidden-layer counterfactual pairs, checks actual initial pixels and a bounded revealing camera translation, and rejects failures. Full-resolution new-case admission and VLM behavior remain pending."
+    },
+    "pose_alignment": {
+      "ability": "Use object transformations to reach a target orientation while distinguishing them from camera changes.",
+      "expected": ["Identify the pose mismatch", "Execute useful object rotations", "Submit a symmetry-correct alignment"],
+      "necessary_setting": "Nonzero initial symmetry-aware error and an executable rotation sequence. Camera motion is optional unless a separate ambiguity condition proves it necessary.",
+      "shortcut_controls": ["Immediate submission fails", "Camera-only trajectories cannot fix physical pose", "Verify reference-aligned final orientation"],
+      "review_risks": ["Rotating camera instead of object", "Initially solved case", "Symmetry makes an apparent mismatch irrelevant"],
+      "implementation": "Existing shortest_alignment and symmetry evaluator support mechanical checks; fresh cases and model traces are required."
+    },
+    "memory_maze": {
+      "ability": "Explore landmark locations and use retained information for ordered physical revisits.",
+      "expected": ["Inspect the relevant accessible landmarks before MEMORIZE", "Preserve spatial notes", "Revisit, MARK in order, and finish near the final landmark"],
+      "necessary_setting": "Nontrivial routes and multiple views; explicit survey commitment. A full exploration-to-recall recording is required.",
+      "shortcut_controls": ["Immediate FINISH fails", "Remote MARK fails", "Compare retained/cleared memory under matched observations and budget before claiming memory benefit"],
+      "review_risks": ["Automatic phase change bypasses exploration", "Reference clip begins in recall", "Goal names disclose a route that makes memory unnecessary"],
+      "implementation": "Native ordered visits exist. New protocol must disable automatic commitment; a measured memory advantage remains unestablished."
+    },
+    "dependency_doors": {
+      "ability": "Plan physical access, retrieval, transport and restoration under one-hand constraints.",
+      "expected": ["Find and open the source", "Pick up and deliver in order", "Restore closure and finish empty-handed"],
+      "necessary_setting": "Closed source blocks pickup; accessible object/destination descriptions uniquely identify visual entities without IDs.",
+      "shortcut_controls": ["Closed-container pickup fails", "Remote manipulation fails", "Delivery without restoring closure fails"],
+      "review_risks": ["Ambiguous repeated cabinet or countertop types", "No useful error feedback", "Reference solver uses hidden identities directly"],
+      "implementation": "Native prerequisite preflight exists; public-description admission and fresh visual-reference replay remain required."
+    },
+    "relational_rearrangement": {
+      "ability": "Translate a world-frame relation into a physical placement while preserving protected objects.",
+      "expected": ["Identify target and anchor", "Pick up and inspect feasible placement", "Place to satisfy every relation and finish empty-handed"],
+      "necessary_setting": "Initially false goal, visible world-frame cue, unique target/anchor descriptions, and both valid and invalid placement alternatives.",
+      "shortcut_controls": ["Initial FINISH fails", "Wrong placement fails", "Moving a protected anchor fails"],
+      "review_risks": ["Screen left/right confused with world directions", "Ambiguous target/anchor", "Slot labels mistaken for object IDs"],
+      "implementation": "Native relation/negative-slot fixtures exist; fresh unnumbered runs and model behavior inspection remain required."
+    },
+    "dynamic_replanning": {
+      "ability": "Detect a changed navigation constraint and revise a previously feasible route.",
+      "expected": ["Reach checkpoint", "Observe the obstruction or action failure", "Use an executable alternate route and mark the goal"],
+      "necessary_setting": "The original route must be physically blocked after the event, while a feasible alternative remains.",
+      "shortcut_controls": ["Skipping checkpoint fails", "Replay of original route encounters the verified obstruction", "Goal remains reachable via an alternative"],
+      "review_risks": ["Oracle detour presented as policy adaptation", "Agent never follows the previously feasible route", "Blocked-motion loops without diagnostic feedback"],
+      "implementation": "Existing native generation validates collision and a longer detour. Fresh VLM traces must establish actual replanning behavior."
+    }
+  }
+}

@@ -1,0 +1,462 @@
+{
+  "schema_version": 1,
+  "as_of": "2026-10-11",
+  "generated_from": "LITERATURE.md",
+  "scope": "Problem-oriented research collection; not an exhaustive systematic review or replication.",
+  "reading_depth_legend": {
+    "M": "method/evaluation sections",
+    "A": "primary abstract or author introduction",
+    "S": "official interface/repository inspection"
+  },
+  "source_count": 64,
+  "sources": [
+    {
+      "work": "TMax (2026)",
+      "primary_url": "https://arxiv.org/abs/2606.23321",
+      "reading_depth": "M/S",
+      "category": "1. Automatically Generated, Verifiable Training Tasks",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "work": "Endless Terminals (2026)",
+      "primary_url": "https://arxiv.org/abs/2601.16443",
+      "reading_depth": "A",
+      "category": "1. Automatically Generated, Verifiable Training Tasks",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "work": "RLVE (2026)",
+      "primary_url": "https://proceedings.mlr.press/v306/zeng26j.html",
+      "reading_depth": "A",
+      "category": "1. Automatically Generated, Verifiable Training Tasks",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "work": "Reasoning Gym (2025)",
+      "primary_url": "https://arxiv.org/abs/2505.24760",
+      "reading_depth": "A",
+      "category": "1. Automatically Generated, Verifiable Training Tasks",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "work": "CompoWorld (2026)",
+      "primary_url": "https://arxiv.org/abs/2609.33665",
+      "reading_depth": "A",
+      "category": "1. Automatically Generated, Verifiable Training Tasks",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "work": "Agent-World (2026)",
+      "primary_url": "https://arxiv.org/abs/2604.18292",
+      "reading_depth": "A",
+      "category": "1. Automatically Generated, Verifiable Training Tasks",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "work": "SWE-smith (2025)",
+      "primary_url": "https://arxiv.org/abs/2504.21798",
+      "reading_depth": "A",
+      "category": "1. Automatically Generated, Verifiable Training Tasks",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "work": "AutoForge (2025)",
+      "primary_url": "https://arxiv.org/abs/2512.22857",
+      "reading_depth": "M",
+      "category": "1. Automatically Generated, Verifiable Training Tasks",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "work": "Environment Scaling / AgentScaler (2025)",
+      "primary_url": "https://arxiv.org/abs/2509.13311",
+      "reading_depth": "A",
+      "category": "1. Automatically Generated, Verifiable Training Tasks",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "work": "AgentGym (2024)",
+      "primary_url": "https://arxiv.org/abs/2406.04151",
+      "reading_depth": "A",
+      "category": "2. Multi-Turn Agent RL Systems",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "work": "AgentGym-RL (2025)",
+      "primary_url": "https://arxiv.org/abs/2509.08755",
+      "reading_depth": "A",
+      "category": "2. Multi-Turn Agent RL Systems",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "work": "RAGEN (2025)",
+      "primary_url": "https://arxiv.org/abs/2504.20073",
+      "reading_depth": "A",
+      "category": "2. Multi-Turn Agent RL Systems",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "work": "VAGEN (2025)",
+      "primary_url": "https://arxiv.org/abs/2510.16907",
+      "reading_depth": "M",
+      "category": "2. Multi-Turn Agent RL Systems",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "work": "GEM (2025)",
+      "primary_url": "https://arxiv.org/abs/2510.01051",
+      "reading_depth": "A/S",
+      "category": "2. Multi-Turn Agent RL Systems",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "work": "SWE-Gym (2024)",
+      "primary_url": "https://arxiv.org/abs/2412.21139",
+      "reading_depth": "A",
+      "category": "2. Multi-Turn Agent RL Systems",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "work": "OpenEnv",
+      "primary_url": "https://github.com/huggingface/OpenEnv",
+      "reading_depth": "S",
+      "category": "2. Multi-Turn Agent RL Systems",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "work": "AppWorld (2024)",
+      "primary_url": "https://arxiv.org/abs/2407.18901",
+      "reading_depth": "A",
+      "category": "3. Tool, Web, Desktop, and Event Worlds",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "work": "ToolSandbox (2024)",
+      "primary_url": "https://arxiv.org/abs/2408.04682",
+      "reading_depth": "A",
+      "category": "3. Tool, Web, Desktop, and Event Worlds",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "work": "τ-bench (2024)",
+      "primary_url": "https://arxiv.org/abs/2406.12045",
+      "reading_depth": "A",
+      "category": "3. Tool, Web, Desktop, and Event Worlds",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "work": "τ²-Bench (2025)",
+      "primary_url": "https://arxiv.org/abs/2506.07982",
+      "reading_depth": "A",
+      "category": "3. Tool, Web, Desktop, and Event Worlds",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "work": "ARE (2025)",
+      "primary_url": "https://arxiv.org/abs/2509.17158",
+      "reading_depth": "A",
+      "category": "3. Tool, Web, Desktop, and Event Worlds",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "work": "Gaia2 (2026)",
+      "primary_url": "https://arxiv.org/abs/2602.11964",
+      "reading_depth": "A",
+      "category": "3. Tool, Web, Desktop, and Event Worlds",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "work": "WebArena (2023)",
+      "primary_url": "https://arxiv.org/abs/2307.13854",
+      "reading_depth": "A",
+      "category": "3. Tool, Web, Desktop, and Event Worlds",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "work": "BrowserGym (2024)",
+      "primary_url": "https://arxiv.org/abs/2412.05467",
+      "reading_depth": "A/S",
+      "category": "3. Tool, Web, Desktop, and Event Worlds",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "work": "WebShop (2022)",
+      "primary_url": "https://arxiv.org/abs/2207.01206",
+      "reading_depth": "A",
+      "category": "3. Tool, Web, Desktop, and Event Worlds",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "work": "OSWorld (2024)",
+      "primary_url": "https://arxiv.org/abs/2404.07972",
+      "reading_depth": "A",
+      "category": "3. Tool, Web, Desktop, and Event Worlds",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "work": "OSWorld 2.0 (2026)",
+      "primary_url": "https://arxiv.org/abs/2606.29537",
+      "reading_depth": "A",
+      "category": "3. Tool, Web, Desktop, and Event Worlds",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "work": "OSWorld-MCP (2025)",
+      "primary_url": "https://arxiv.org/abs/2510.24563",
+      "reading_depth": "A",
+      "category": "3. Tool, Web, Desktop, and Event Worlds",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "work": "OSWorld-Science (2026)",
+      "primary_url": "https://arxiv.org/abs/2609.39903",
+      "reading_depth": "A",
+      "category": "3. Tool, Web, Desktop, and Event Worlds",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "work": "AgentDojo (2024)",
+      "primary_url": "https://arxiv.org/abs/2406.13352",
+      "reading_depth": "A",
+      "category": "3. Tool, Web, Desktop, and Event Worlds",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "work": "BabyAI (2018/ICLR 2019)",
+      "primary_url": "https://arxiv.org/abs/1810.08272",
+      "reading_depth": "A/S",
+      "category": "4. Spatial, Embodied, and Generative Worlds",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "work": "MiniGrid / MiniWorld (2023)",
+      "primary_url": "https://arxiv.org/abs/2306.13831",
+      "reading_depth": "A",
+      "category": "4. Spatial, Embodied, and Generative Worlds",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "work": "gSCAN (2020)",
+      "primary_url": "https://arxiv.org/abs/2003.05161",
+      "reading_depth": "A",
+      "category": "4. Spatial, Embodied, and Generative Worlds",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "work": "XLand (2021)",
+      "primary_url": "https://arxiv.org/abs/2107.12808",
+      "reading_depth": "A",
+      "category": "4. Spatial, Embodied, and Generative Worlds",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "work": "XLand-MiniGrid (2023)",
+      "primary_url": "https://arxiv.org/abs/2312.12044",
+      "reading_depth": "A",
+      "category": "4. Spatial, Embodied, and Generative Worlds",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "work": "XLand-100B (2024)",
+      "primary_url": "https://arxiv.org/abs/2406.08973",
+      "reading_depth": "A",
+      "category": "4. Spatial, Embodied, and Generative Worlds",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "work": "Procgen (2019/ICML 2020)",
+      "primary_url": "https://arxiv.org/abs/1912.01588",
+      "reading_depth": "A",
+      "category": "4. Spatial, Embodied, and Generative Worlds",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "work": "ProcTHOR (2022)",
+      "primary_url": "https://arxiv.org/abs/2206.06994",
+      "reading_depth": "A",
+      "category": "4. Spatial, Embodied, and Generative Worlds",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "work": "Habitat 2.0 (2021)",
+      "primary_url": "https://arxiv.org/abs/2106.14405",
+      "reading_depth": "A",
+      "category": "4. Spatial, Embodied, and Generative Worlds",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "work": "ALFRED (2019/CVPR 2020)",
+      "primary_url": "https://arxiv.org/abs/1912.01734",
+      "reading_depth": "A",
+      "category": "4. Spatial, Embodied, and Generative Worlds",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "work": "DialFRED (2022)",
+      "primary_url": "https://arxiv.org/abs/2202.13330",
+      "reading_depth": "A",
+      "category": "4. Spatial, Embodied, and Generative Worlds",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "work": "BEHAVIOR-1K (2024)",
+      "primary_url": "https://arxiv.org/abs/2403.09227",
+      "reading_depth": "A",
+      "category": "4. Spatial, Embodied, and Generative Worlds",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "work": "DeliveryBench (2025)",
+      "primary_url": "https://arxiv.org/abs/2512.19234",
+      "reading_depth": "A/S",
+      "category": "4. Spatial, Embodied, and Generative Worlds",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "work": "SimWorld Studio (2026)",
+      "primary_url": "https://arxiv.org/abs/2605.09423",
+      "reading_depth": "M",
+      "category": "4. Spatial, Embodied, and Generative Worlds",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "work": "Theory of Space (2026)",
+      "primary_url": "https://arxiv.org/abs/2602.07055",
+      "reading_depth": "M",
+      "category": "4. Spatial, Embodied, and Generative Worlds",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "work": "RoboSpatial (2024)",
+      "primary_url": "https://arxiv.org/abs/2411.16537",
+      "reading_depth": "A",
+      "category": "4. Spatial, Embodied, and Generative Worlds",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "work": "AlphaMaze (2025)",
+      "primary_url": "https://arxiv.org/abs/2502.14669",
+      "reading_depth": "A",
+      "category": "4. Spatial, Embodied, and Generative Worlds",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "work": "From Building Blocks to Planning (2025)",
+      "primary_url": "https://arxiv.org/abs/2512.24532",
+      "reading_depth": "A",
+      "category": "4. Spatial, Embodied, and Generative Worlds",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "work": "Beyond Spatial Benchmarks (2026)",
+      "primary_url": "https://arxiv.org/abs/2609.29934",
+      "reading_depth": "M",
+      "category": "4. Spatial, Embodied, and Generative Worlds",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "work": "PAIRED (2020)",
+      "primary_url": "https://arxiv.org/abs/2012.02096",
+      "reading_depth": "A",
+      "category": "5. Curricula and Open-Ended Interaction",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "work": "Prioritized Level Replay (2021)",
+      "primary_url": "https://proceedings.mlr.press/v139/jiang21b.html",
+      "reading_depth": "A/S",
+      "category": "5. Curricula and Open-Ended Interaction",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "work": "ACCEL (2022)",
+      "primary_url": "https://arxiv.org/abs/2203.01302",
+      "reading_depth": "A",
+      "category": "5. Curricula and Open-Ended Interaction",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "work": "ALP-GMM (2020)",
+      "primary_url": "https://proceedings.mlr.press/v100/portelas20a.html",
+      "reading_depth": "A",
+      "category": "5. Curricula and Open-Ended Interaction",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "work": "TeachMyAgent (2021)",
+      "primary_url": "https://arxiv.org/abs/2103.09815",
+      "reading_depth": "A",
+      "category": "5. Curricula and Open-Ended Interaction",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "work": "POET (2019)",
+      "primary_url": "https://arxiv.org/abs/1901.01753",
+      "reading_depth": "A",
+      "category": "5. Curricula and Open-Ended Interaction",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "work": "EnvGen (2024)",
+      "primary_url": "https://arxiv.org/abs/2403.12014",
+      "reading_depth": "A/S",
+      "category": "5. Curricula and Open-Ended Interaction",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "work": "OMNI-EPIC (2024/ICLR 2025)",
+      "primary_url": "https://arxiv.org/abs/2405.15568",
+      "reading_depth": "A/S",
+      "category": "5. Curricula and Open-Ended Interaction",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "work": "TextWorld (2018)",
+      "primary_url": "https://arxiv.org/abs/1806.11532",
+      "reading_depth": "A",
+      "category": "5. Curricula and Open-Ended Interaction",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "work": "ScienceWorld (2022)",
+      "primary_url": "https://arxiv.org/abs/2203.07540",
+      "reading_depth": "A",
+      "category": "5. Curricula and Open-Ended Interaction",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "work": "Crafter (2021)",
+      "primary_url": "https://arxiv.org/abs/2109.06780",
+      "reading_depth": "A",
+      "category": "5. Curricula and Open-Ended Interaction",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "work": "Craftax (2024)",
+      "primary_url": "https://arxiv.org/abs/2402.16801",
+      "reading_depth": "A",
+      "category": "5. Curricula and Open-Ended Interaction",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "work": "MineDojo (2022)",
+      "primary_url": "https://arxiv.org/abs/2206.08853",
+      "reading_depth": "A",
+      "category": "5. Curricula and Open-Ended Interaction",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "work": "BALROG (2024)",
+      "primary_url": "https://arxiv.org/abs/2411.13543",
+      "reading_depth": "A",
+      "category": "5. Curricula and Open-Ended Interaction",
+      "checked_on": "2026-10-11"
+    },
+    {
+      "work": "Potential-based shaping (1999)",
+      "primary_url": "https://people.eecs.berkeley.edu/~russell/papers/icml99-shaping.pdf",
+      "reading_depth": "A",
+      "category": "5. Curricula and Open-Ended Interaction",
+      "checked_on": "2026-10-11"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "spatial-interaction-stage1"
+version = "0.1.0"
+description = "Interactive spatial simulator benchmarks with separate evaluator state"
+requires-python = ">=3.10"
+dependencies = ["numpy>=1.24", "Pillow>=9"]
+
+[tool.setuptools.packages.find]
+include = ["spatial_interaction*"]
+
+[tool.setuptools.package-data]
+"spatial_interaction.environments.dynamic_memory" = ["scene_states/*.json"]

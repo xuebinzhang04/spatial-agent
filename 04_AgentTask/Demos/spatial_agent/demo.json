@@ -1,0 +1,42 @@
+{
+  "title": "SpatialAgent",
+  "model_root": "01_Models",
+  "generation_audits": [
+    "05_Experiment/results/task-generation-audit-shape3d-20261111-r3",
+    "05_Experiment/results/task-generation-audit-recorded-20261111-r6",
+    {"path": "05_Experiment/results/task-generation-audit-native-448855", "tasks": ["missing_object", "moved_object"]},
+    "05_Experiment/results/task-generation-audit-native-448983"
+  ],
+  "showcase": {
+    "missing_object": "05_Experiment/results/stage1-action-tours-20261019/cases/missing_object",
+    "moved_object": "05_Experiment/results/stage1-action-tours-20261019/cases/moved_object",
+    "shape_identification": "05_Experiment/results/showcase-cases-20261111/cases/shape_identification",
+    "pose_alignment": "05_Experiment/results/showcase-cases-20261111/cases/pose_alignment",
+    "memory_maze": "05_Experiment/results/showcase-cases-native-449135/cases/memory_maze",
+    "dependency_doors": "05_Experiment/results/showcase-cases-native-449135/cases/dependency_doors",
+    "relational_rearrangement": "05_Experiment/results/showcase-cases-native-449135/cases/relational_rearrangement",
+    "dynamic_replanning": "05_Experiment/results/showcase-cases-native-449135/cases/dynamic_replanning"
+  },
+  "episode_globs": [
+    "05_Experiment/results/showcase-cases-20261111/cases/*/trajectory.jsonl",
+    "05_Experiment/results/showcase-cases-native-449135/cases/*/trajectory.jsonl",
+    "05_Experiment/results/stage1-action-tours-20261019/cases/*/trajectory.jsonl",
+    "05_Experiment/results/stage1-vlm-first-results-20261019/episodes/*/trajectory.jsonl",
+    "05_Experiment/results/native-migration-memory_maze-371491/episodes/*/trajectory.jsonl",
+    "05_Experiment/results/native-migration-dependency_doors-371892/episodes/*/trajectory.jsonl",
+    "05_Experiment/results/native-migration-relational_rearrangement-372012/episodes/*/trajectory.jsonl",
+    "05_Experiment/results/native-migration-dynamic_replanning-372023/episodes/*/trajectory.jsonl"
+  ],
+  "tasks": {
+    "missing_object": {"title": "What went missing?", "category": "Spatial memory", "summary": "Explore a room, remember its contents, and identify an object after it disappears.", "objectives": ["Explore and remember the initial scene", "Inspect the scene after the hidden change", "Report the missing object and its previous location"]},
+    "moved_object": {"title": "Where did it move?", "category": "Change detection", "summary": "Find a displaced object and connect its previous and current locations.", "objectives": ["Remember objects and their locations", "Search the changed scene", "Identify the moved object and both locations"]},
+    "shape_identification": {"title": "A different point of view", "category": "Active perception", "summary": "Move the camera to identify a three-dimensional shape across different projections.", "objectives": ["Inspect the target shape", "Choose informative camera viewpoints", "Submit the matching candidate"]},
+    "pose_alignment": {"title": "Reason about rotation", "category": "3D transformation", "summary": "Control the viewpoint and the object independently to align a target pose.", "objectives": ["Compare target and reference poses", "Rotate the object around its own axes", "Submit a symmetry-aware pose alignment"]},
+    "memory_maze": {"title": "Remember the way back", "category": "Memory-guided navigation", "summary": "Explore real indoor landmarks, then revisit them in the requested order.", "objectives": ["Explore and memorize indoor landmarks", "Revisit and mark the ordered landmarks", "Finish near the final landmark"]},
+    "dependency_doors": {"title": "Plan before you pick", "category": "Interaction dependencies", "summary": "Open containers, retrieve and deliver objects, then restore the container state.", "objectives": ["Open the source container before retrieval", "Carry and place each requested object", "Close used containers and finish with an empty hand"]},
+    "relational_rearrangement": {"title": "Put relations into action", "category": "Spatial manipulation", "summary": "Place an object to satisfy spatial relations while preserving the rest of the scene.", "objectives": ["Pick up the requested object", "Place it to satisfy all specified spatial relations", "Preserve protected objects and finish empty-handed"]},
+    "dynamic_replanning": {"title": "When the route changes", "category": "Adaptive planning", "summary": "Discover a real obstruction after a checkpoint and find another route.", "objectives": ["Reach the checkpoint and trigger the change", "Observe the obstruction and find a detour", "Reach, mark, and finish near the destination"]},
+    "signal_repair": {"title": "Inspect, diagnose, repair", "category": "Interactive diagnosis", "summary": "Inspect equipment, apply the appropriate repair, and preserve healthy stations.", "objectives": ["Inspect the stations", "Repair faults and preserve healthy equipment", "Activate and verify the final system state"]},
+    "resource_delivery": {"title": "Deliver within constraints", "category": "Resource-aware planning", "summary": "Plan pickup, delivery, and replenishment under time and energy constraints.", "objectives": ["Plan pickups and available resources", "Complete ordered deliveries", "Respect time and energy constraints"]}
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "name": "shape_identification",
+  "title": "主动三维形状识别",
+  "description": "主动移动相机，从候选参考视图中识别目标多方块形状。",
+  "backend": "spatial_interaction",
+  "defaults": {
+    "seed": 42,
+    "difficulty": 1,
+    "split": "development"
+  },
+  "environment": "shape3d",
+  "task_type": "shape_identification"
+}

@@ -1,0 +1,6 @@
+{
+  "status": "native_validated",
+  "source": "interaction_lab/tasks/dependency_doors",
+  "validation": "05_Experiment/results/native-migration-dependency_doors-371892/validation.json",
+  "original_entry_backup": "archive/agent-interaction/2026-10-19-symbolic-task-entries/dependency_doors"
+}

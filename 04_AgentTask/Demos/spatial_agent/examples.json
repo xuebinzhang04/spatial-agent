@@ -1,0 +1,243 @@
+{
+  "missing_object": {
+    "question": "What disappeared, and where was it?",
+    "goal": "Inspect a room, commit a memory, then report the missing object and its previous location.",
+    "mechanism": "The environment makes one hidden change after MEMORIZE. Camera actions collect evidence before and after it.",
+    "verification": "Object identity, change type, and previous-location correctness must all hold.",
+    "lesson": "This successful privileged tour demonstrates the task protocol; it does not demonstrate visual inference.",
+    "next_test": "Same case and budget: retain versus clear the policy's exploration memory. Proposed, not run.",
+    "events": [
+      "MEMORIZE",
+      "SUBMIT"
+    ],
+    "design": "After MEMORIZE the environment removes one exposed object without saying which, and returns the camera to the start. The survey must therefore cover objects and their supports, not only the current view.",
+    "facts": [
+      [
+        "Changed object",
+        "{target_type} on the {support_type}"
+      ],
+      [
+        "Objects to remember",
+        "{exposed_objects} exposed objects"
+      ],
+      [
+        "Visible from start",
+        "{target_visible_at_start}"
+      ],
+      [
+        "Distance from start",
+        "{target_distance_m} m"
+      ]
+    ]
+  },
+  "moved_object": {
+    "question": "Did the object move, or did the observer move?",
+    "goal": "Find a relocated object and report its old and new receptacles.",
+    "mechanism": "A hidden relocation separates inspection from change detection. The policy can move and revisit views.",
+    "verification": "Object identity plus both the old and the new locations, not just a change label.",
+    "lesson": "Ground spatial change in stable object identities across viewpoints. The tour uses evaluator information.",
+    "next_test": "Compare fixed-view and active-view policies on the same hidden change. Proposed, not run.",
+    "events": [
+      "MEMORIZE",
+      "SUBMIT"
+    ],
+    "design": "After MEMORIZE one object is moved to another receptacle. Noticing an empty spot is not enough: the agent must also search for where the object went.",
+    "facts": [
+      [
+        "Moved object",
+        "{target_type}: {support_type} → {new_support_type}"
+      ],
+      [
+        "Relocation",
+        "{relocation_distance_m} m"
+      ],
+      [
+        "Objects to remember",
+        "{exposed_objects} exposed objects"
+      ],
+      [
+        "Visible from start",
+        "{target_visible_at_start}"
+      ]
+    ]
+  },
+  "shape_identification": {
+    "question": "Which view resolves the shape ambiguity?",
+    "goal": "Choose camera motions to identify a target among fixed multi-view candidates.",
+    "mechanism": "Camera translation and rotation change the available evidence without changing target identity.",
+    "verification": "The submitted candidate must be the target shape.",
+    "lesson": "An active-perception task needs informative observations, not motion for its own sake.",
+    "next_test": "Same shape: fixed view versus an equal-budget active policy. Proposed, not run.",
+    "events": [
+      "CAMERA_RIGHT",
+      "SUBMIT_SHAPE"
+    ],
+    "design": "From the starting viewpoint the target is pixel-identical to a wrong candidate. Only moving the camera reveals the hidden depth that separates them.",
+    "facts": [
+      [
+        "Candidates",
+        "{candidates} (answer #{correct_index})"
+      ],
+      [
+        "Identical in first view",
+        "{initial_pixel_twins} wrong candidate(s)"
+      ],
+      [
+        "Revealing camera path",
+        "{witness_actions} moves"
+      ],
+      [
+        "Shape",
+        "{voxels} cubes"
+      ]
+    ]
+  },
+  "pose_alignment": {
+    "question": "What changes the view, and what changes the pose?",
+    "goal": "Rotate the target to match a reference using world-axis object rotations.",
+    "mechanism": "Camera actions change observation; object rotations change the target's actual orientation.",
+    "verification": "Symmetry-aware angular error must be zero at SUBMIT_POSE.",
+    "lesson": "Show the action type with the image so a viewer can distinguish perception from transformation.",
+    "next_test": "Hold the target fixed and change initial camera orientation. Proposed, not run.",
+    "events": [
+      "CAMERA_RIGHT",
+      "OBJECT_ROTATE_X_POS",
+      "SUBMIT_POSE"
+    ],
+    "design": "Camera moves change only the view; object rotations change the pose. The reference is an exact number of quarter turns away, set by the difficulty level.",
+    "facts": [
+      [
+        "Minimum rotations",
+        "{alignment_length} quarter turns"
+      ],
+      [
+        "Rotation axes",
+        "{axes}"
+      ],
+      [
+        "Shape",
+        "{voxels} cubes"
+      ]
+    ]
+  },
+  "memory_maze": {
+    "question": "Can spatial memory support ordered revisits?",
+    "goal": "Physically revisit the requested indoor landmarks in order, then finish at the last landmark.",
+    "mechanism": "MARK requires a visible landmark within 1.6 m. The agent cannot complete the task by naming IDs alone.",
+    "verification": "Every landmark marked in the requested order, finishing near the last one.",
+    "lesson": "This Oracle clip starts in recall. It shows ordered navigation, not the exploration phase or a memory benefit.",
+    "next_test": "L1/L2/L3 use 2/4/5 visits. Calibrate policy difficulty and test memory ablations; not yet measured.",
+    "events": [
+      "MARK",
+      "FINISH"
+    ],
+    "design": "MEMORIZE returns the agent to the start; landmarks must then be revisited in order from memory. MARK only counts when the landmark is visible within 1.6 m.",
+    "facts": [
+      [
+        "Visit order",
+        "{landmark_types}"
+      ],
+      [
+        "Distinct landmarks",
+        "{distinct_landmarks}"
+      ],
+      [
+        "Return to first",
+        "{returns_to_first}"
+      ],
+      [
+        "Visible from start",
+        "{visible_at_start} of {distinct_landmarks}"
+      ]
+    ]
+  },
+  "dependency_doors": {
+    "question": "Can the agent satisfy action prerequisites?",
+    "goal": "Open the source, retrieve a bottle, deliver it, and close the source before finishing.",
+    "mechanism": "Native visibility, collision, and one-hand capacity enforce real container-access dependencies.",
+    "verification": "Ordered delivery, final object location, closed source, and empty hand must all hold.",
+    "lesson": "A valid plan must satisfy access and cleanup conditions. These are containers, not invented key locks.",
+    "next_test": "L1/L2/L3 require 1/2/3 orders. Compare matched open/closed starts; proposed, not run.",
+    "events": [
+      "OpenObject",
+      "PickupObject",
+      "PutObject",
+      "CloseObject",
+      "FINISH"
+    ],
+    "design": "Each item sits inside a closed container, and the simulator rejects pickup until it is opened. With one hand, items travel one at a time, and containers must be closed again.",
+    "facts": [
+      [
+        "Orders",
+        "{orders}"
+      ],
+      [
+        "Items, in order",
+        "{object_types}"
+      ],
+      [
+        "Taken from",
+        "{source_types}"
+      ],
+      [
+        "Delivered to",
+        "{destination_types}"
+      ]
+    ]
+  },
+  "relational_rearrangement": {
+    "question": "Can a language relation become a physical state?",
+    "goal": "Move the target north of its anchor while leaving every protected object untouched.",
+    "mechanism": "The agent picks a visible placement slot. A compass defines world directions independently of screen axes.",
+    "verification": "Requested relations, preservation of other objects, actual pickup, and empty hand.",
+    "lesson": "A visually plausible placement is insufficient if the relation or preservation condition fails.",
+    "next_test": "Add conjunctive relations and change the camera heading; structural levels exist, model calibration does not.",
+    "events": [
+      "PickupObject",
+      "PLACE",
+      "FINISH"
+    ],
+    "design": "The goal is a world-frame relation to an anchor (an on-screen compass, independent of turning). Only some placement slots satisfy it, and every other object must stay untouched.",
+    "facts": [
+      [
+        "Object to move",
+        "{target_type}"
+      ],
+      [
+        "Goal relation",
+        "{relation} the {anchor_type}{near}"
+      ],
+      [
+        "Slots that satisfy it",
+        "{satisfying_slots} of {slots}"
+      ]
+    ]
+  },
+  "dynamic_replanning": {
+    "question": "What should change when the world changes?",
+    "goal": "Reach the checkpoint, inspect the changed room, take a detour, and finish near the target.",
+    "mechanism": "Reaching the checkpoint moves a real obstruction. Generation verifies a blocked edge and executable alternate route.",
+    "verification": "Checkpoint reached, goal marked and finish near it; generation verifies that the obstacle physically blocks the old route.",
+    "lesson": "The clip shows the trigger and a valid detour. It does not show a learned policy discovering the detour.",
+    "next_test": "Same scene with and without the obstruction; then vary the trigger. Proposed, not run.",
+    "events": [
+      "MARK",
+      "FINISH"
+    ],
+    "design": "Reaching the checkpoint moves a real obstacle onto the remembered route. The old path physically fails, so the agent must re-observe and take a longer detour.",
+    "facts": [
+      [
+        "Goal",
+        "{target_type}"
+      ],
+      [
+        "Obstacle",
+        "{obstacle_type}"
+      ],
+      [
+        "Route length",
+        "{baseline_route_steps} → {detour_route_steps} steps"
+      ]
+    ]
+  }
+}

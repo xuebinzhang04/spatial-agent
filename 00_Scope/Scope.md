@@ -1,0 +1,1 @@
+Develop **interactive spatial learning environments** that enable VLM agents to acquire and improve spatial reasoning through **reinforcement learning** and active interaction.

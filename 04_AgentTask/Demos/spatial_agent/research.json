@@ -1,0 +1,314 @@
+{
+  "simulators": [
+    {
+      "id": "ai2thor",
+      "name": "AI2-THOR 5.0.0 (Unity)",
+      "definition": "Native indoor simulator with rendered RGB, object interactions, visibility, navigation and collision.",
+      "runtime": "02_Simulator/AI2THOR/runtime/releases/; Python controller in 02_Simulator/AI2THOR/runtime/python/",
+      "revision": "Python 5.0.0; controller source 24f79883b4889e3f0e6f4ae301808b9025872dfc",
+      "evidence": "Native software-rendering records on FloorPlan1/2/3; current live service has not been revalidated on a GPU.",
+      "variables": [
+        [
+          "Scene and seed (`scene_id`, `seed`)",
+          "Instance configuration",
+          "FloorPlan layout, start pose and sampled object bindings; only supported combinations are generated."
+        ],
+        [
+          "Agent view (`position`, `rotation`, `cameraHorizon`)",
+          "Dynamic state / action effect",
+          "Movement, yaw and pitch; RGB reveals only the current view."
+        ],
+        [
+          "Object state (`isOpen`, `parentReceptacles`, `inventoryObjects`)",
+          "Dynamic state",
+          "Native transforms, visibility, open/closed state, parent receptacles and one-hand inventory."
+        ],
+        [
+          "Step budget (`max_steps`)",
+          "Episode configuration",
+          "Limits interaction length; invalid actions consume budget."
+        ]
+      ]
+    },
+    {
+      "id": "shape3d",
+      "name": "Procedural Shape3D simulator",
+      "definition": "Repository-local geometric simulator with voxel shapes, camera motion, object rotations and raster observations.",
+      "runtime": "04_AgentTask/TaskFrameworks/spatial_interaction/spatial_interaction/environments/shape3d/",
+      "revision": "Local task framework; per-build source hashes are recorded.",
+      "evidence": "Recorded Oracle and model attempts; lightweight online reset/step checks use the actual simulator.",
+      "variables": [
+        [
+          "Shape (`cells`, `seed`)",
+          "Instance configuration",
+          "Voxel arrangement, symmetry, candidate set or reference pose."
+        ],
+        [
+          "Camera (`camera`, `yaw`, `pitch`)",
+          "Dynamic state / action effect",
+          "Position, yaw and pitch alter the observation, not the shape identity."
+        ],
+        [
+          "Object orientation (`orientation`)",
+          "Dynamic state",
+          "World-axis quarter turns; changed only by object-rotation actions."
+        ],
+        [
+          "Visibility and budget (`occlusion`, `max_steps`)",
+          "Instance configuration",
+          "Visibility and interaction limits; levels are structural, not policy-calibrated."
+        ]
+      ]
+    },
+    {
+      "id": "simworld_delivery",
+      "name": "SimWorld — DeliveryBench gym_citynav build",
+      "definition": "The dedicated SimWorld/Unreal package used by DeliveryBench. Delivery is a task layer; this executable supplies cities, rendering, movement and UnrealCV interaction.",
+      "runtime": "02_Simulator/DeliveryBench/Linux/gym_citynav/Binaries/Linux/gym_citynav",
+      "revision": "Package asset revision 64a4889d72a2c7b792d242083e53a926b43ceaa9; recorded engine UE 5.3.2-29314046.",
+      "evidence": "interaction-demo-345795/simulator.log records the engine version and executed map. It is a separate package from 02_Simulator/SimWorld/Linux/. The standalone SimWorld source revision is not asserted to be this binary's source revision.",
+      "variables": [
+        [
+          "City and seed (`map`, `seed`)",
+          "Launch configuration",
+          "Ten local city datasets; a live city change requires restarting the allocated UE process."
+        ],
+        [
+          "Agent state (`position_cm`, `transport`)",
+          "Dynamic state",
+          "UE coordinates are centimetres; the native API also accepts metre-suffixed MOVE targets."
+        ],
+        [
+          "Observation streams (`images`)",
+          "Observation configuration",
+          "Global map, local map and first-person RGB are distinct named streams."
+        ],
+        [
+          "Resources (`sim_time_s`, `energy_pct`, `battery_pct`, `earnings`)",
+          "Task-coupled dynamic state",
+          "Read from native task-manager fields; diagram sliders do not alter simulator state."
+        ],
+        [
+          "Delivery state (`active_orders`, `order_pool`)",
+          "Delivery task state",
+          "Preparation/deadline, pickup/dropoff, temperature, carrying and placement constraints."
+        ]
+      ]
+    }
+  ],
+  "tasks": {
+    "missing_object": {
+      "definition": "Spatial change detection: inspect an initial room, commit memory, then identify one hidden removal.",
+      "objective": "Identify the missing object and its previous receptacle. New native sessions ground references in observed image pixels; historical recordings used stable numeric IDs.",
+      "factors": [
+        [
+          "Hidden change",
+          "Task intervention",
+          "One object's rendering, collision and interaction are deactivated after MEMORIZE."
+        ],
+        [
+          "Memory and exploration",
+          "Policy state / budget",
+          "The agent chooses views and writes its own memory before detection."
+        ]
+      ],
+      "verification": "Check the submitted `answer.changes`: `object_id`, change `type` and `previous_location`. Strict success requires correct identity and prior location; `previous_location_accuracy` is separate from partial `reward`.",
+      "difficulty": "Implemented controls: L1 samples initially visible pickupable targets with bounding-box area at least 100 pixels; L2 permits smaller targets (8–1800 pixels) and changes the initial viewpoint after fixture selection. Missing-object L3 is not supported by the current native generator. `exploration_budget`, `max_steps`, target visibility and start pose govern evidence acquisition. `active_scan_v1` additionally requires target discovery outside the initial view and an explicit memory stage; this protocol has not been validated by these historical clips. Levels are structural, not measured policy difficulty.",
+      "actions": "Navigation and view actions; `MEMORIZE`; `SUBMIT` with a structured changes list.",
+      "limits": "Removal means native deactivation in this build. An individual view may occlude the changed object. Native RGB no longer overlays object numbers. Public references use `view:STEP:X:Y` (normalized observed-image coordinates); segmentation and identifier resolution remain private. Existing clips use the previous numbered protocol. New native rollouts require runtime revalidation; ambiguous same-type textual goals are rejected.",
+      "phase_labels": {
+        "memorization": "Memorize",
+        "detection": "Discern"
+      }
+    },
+    "moved_object": {
+      "definition": "Spatial change detection across viewpoints after one hidden object relocation.",
+      "objective": "Report the moved object and both its old and new receptacles.",
+      "factors": [
+        [
+          "Relocation",
+          "Task intervention",
+          "A collision-checked native placement changes the object's receptacle."
+        ],
+        [
+          "Reference observations",
+          "Agent-acquired evidence",
+          "Camera movement is independent of object movement."
+        ]
+      ],
+      "verification": "Verify `object_id`, change `type`, `previous_location` and `current_location`. All components must be correct for strict `success`.",
+      "difficulty": "L1/L2 target eligibility uses different image-area ranges; L2 resets the initial view. L3 is supported for moved-object. `exploration_budget`, `max_steps`, collision-checked destination and old/new receptacles determine search and memory requirements. Start visibility, relocation and the memory protocol must be inspected for the selected case; these controls are not a calibrated success hierarchy.",
+      "actions": "Navigation, looking, `MEMORIZE` and structured `SUBMIT`.",
+      "limits": "A correct object ID alone is insufficient; Oracle reports use privileged state. Native RGB no longer overlays object numbers. Public references use `view:STEP:X:Y` (normalized observed-image coordinates); segmentation and identifier resolution remain private. Existing clips use the previous numbered protocol. New native rollouts require runtime revalidation; ambiguous same-type textual goals are rejected.",
+      "phase_labels": {
+        "memorization": "Memorize",
+        "detection": "Discern"
+      }
+    },
+    "shape_identification": {
+      "definition": "Active 3D shape identification from chosen camera views and fixed candidate panels.",
+      "objective": "Select the candidate with the same three-dimensional shape as the target.",
+      "factors": [
+        [
+          "Candidates and symmetry",
+          "Task configuration",
+          "Controls competing shape interpretations."
+        ],
+        [
+          "Viewpoint",
+          "Chosen action",
+          "Camera movement changes the evidence; target identity is invariant."
+        ]
+      ],
+      "verification": "Compare submitted `candidate_id` to target identity. Report `shape_accuracy`; view count and action cost are separate diagnostics.",
+      "difficulty": "Default construction uses `voxels = 5 + difficulty` and `candidates = min(5, 2 + difficulty)`; above L1 the initial cube orientation is sampled from 24 proper rotations. Default occlusion is 0 below L4 and 0.35 at L4+. Explicit task parameters override defaults. `require_initial_pixel_ambiguity` additionally demands a pixel-equivalent initial alternative and an informative reachable view. Historical examples do not establish that intervention or measured policy difficulty.",
+      "actions": "`CAMERA` translations, yaw and pitch; `SUBMIT_SHAPE`(`candidate_id`).",
+      "limits": "This is a geometric simulator, not a photorealistic indoor scene.",
+      "phase_labels": {
+        "interaction": "Inspect"
+      }
+    },
+    "pose_alignment": {
+      "definition": "Interactive object-pose alignment with independent camera and object transformations.",
+      "objective": "Rotate the target to match the reference orientation, accounting for object symmetry.",
+      "factors": [
+        [
+          "Reference and initial orientation",
+          "Task configuration",
+          "Define the required transformation."
+        ],
+        [
+          "Camera versus object axes",
+          "Independent action effects",
+          "Moving the camera does not rotate the target."
+        ]
+      ],
+      "verification": "At `SUBMIT_POSE`, compute symmetry-aware `rotation_error_degrees`; the orientation must match within the evaluator tolerance.",
+      "difficulty": "Default shape size is `5 + difficulty` voxels. The reference is sampled at an exact symmetry-aware minimum depth of `min(difficulty, 3)` quarter turns over the allowed `axes` (3 is the cube-rotation diameter; restricted axes cap it at their deepest reachable pose; `alignment_length` overrides it). Earlier recordings used `1 + difficulty` random turns, whose minimum length did not grow with the level. Initial orientation and optional occlusion follow Shape3D controls. Strict evaluation uses symmetry-aware angular error; levels remain structural.",
+      "actions": "`CAMERA` actions; OBJECT_ROTATE axis/direction actions; `SUBMIT_POSE`.",
+      "limits": "World-axis quarter turns are discrete; the task does not claim continuous robotic control.",
+      "phase_labels": {
+        "interaction": "Align"
+      }
+    },
+    "memory_maze": {
+      "definition": "Indoor landmark exploration and ordered physical revisits in native AI2-THOR rooms.",
+      "objective": "Visit and mark landmarks in the requested order, then finish near the last one.",
+      "factors": [
+        [
+          "Visit sequence",
+          "Task configuration",
+          "L1/L2/L3 request 2/4/5 visits, including revisits at higher levels."
+        ],
+        [
+          "Visibility and proximity",
+          "Action preconditions",
+          "MARK requires the object to be visible within 1.6 m."
+        ]
+      ],
+      "verification": "Check `ordered_visits` against `required_visits`, and require final proximity. `wrong_visits` and `environment_actions` diagnose the interaction history.",
+      "difficulty": "L1/L2/L3 select 2/3/4 reachable landmarks; L2/L3 append a return to the first landmark, yielding 2/4/5 ordered visits. `MARK` requires visibility within 1.6 m. `exploration_budget`, `max_steps`, initial pose and `explicit_recall_v1` control acquisition and recall. The selected historical recording may start in recall; it does not establish a memory benefit.",
+      "actions": "Navigation, looking, `MEMORIZE`, `MARK`(`object_id`), `FINISH`.",
+      "limits": "The native kitchen is not a literal maze. Exploration can sometimes be bypassed; no information-theoretic memory necessity is claimed. Native RGB no longer overlays object numbers. Public references use `view:STEP:X:Y` (normalized observed-image coordinates); segmentation and identifier resolution remain private. Existing clips use the previous numbered protocol. New native rollouts require runtime revalidation; ambiguous same-type textual goals are rejected.",
+      "phase_labels": {
+        "exploration": "Memorize",
+        "recall": "Recall"
+      }
+    },
+    "dependency_doors": {
+      "definition": "Physical container-access prerequisites and ordered object retrieval/delivery.",
+      "objective": "Open the source, retrieve and deliver requested objects, close used sources and finish empty-handed.",
+      "factors": [
+        [
+          "Orders",
+          "Task configuration",
+          "L1/L2/L3 use 1/2/3 retrieval orders."
+        ],
+        [
+          "Container and hand state",
+          "Native action preconditions",
+          "Closed-source rejection and executable retrieval are checked during construction."
+        ]
+      ],
+      "verification": "Verify ordered pickup/placement, `delivered` versus `required`, final receptacles, `sources_closed` and empty native inventory (`inventoryObjects`).",
+      "difficulty": "L1/L2/L3 request 1/2/3 verified container retrieval-and-delivery orders. Opening before pickup, placement in the target receptacle, restoring closure and ending empty-handed are conjunctive requirements. Cases with insufficient valid dependencies are rejected. Route length, occlusion and action budget add instance variation; empirical policy difficulty is uncalibrated.",
+      "actions": "Navigation; `OpenObject`, `PickupObject`, `PutObject`, `CloseObject`; `FINISH`.",
+      "limits": "This native task uses real containers, not the symbolic prototype's key/lock chain. Native RGB no longer overlays object numbers. Public references use `view:STEP:X:Y` (normalized observed-image coordinates); segmentation and identifier resolution remain private. Existing clips use the previous numbered protocol. New native rollouts require runtime revalidation; ambiguous same-type textual goals are rejected.",
+      "phase_labels": {
+        "interaction": "Retrieve and restore"
+      }
+    },
+    "relational_rearrangement": {
+      "definition": "Physical object rearrangement under world-frame spatial relations and preservation constraints.",
+      "objective": "Choose a valid placement for the target while preserving the anchor and all protected objects.",
+      "factors": [
+        [
+          "Relation conjunction",
+          "Task configuration",
+          "Levels progress from one direction to direction/distance conjunctions."
+        ],
+        [
+          "Visible slots and compass",
+          "Public observation",
+          "Placement must be visible, unoccluded and within reach; screen axes do not define the relation."
+        ]
+      ],
+      "verification": "Require `relation_satisfied`, `protected_objects_preserved` and `hand_empty`, with actual pickup and preservation of touch history.",
+      "difficulty": "L1 requires a signed relation along one axis. L2 retains one axis and adds a proximity bound (`near = 0.85 m`). L3 requires both x and z signed relations plus that proximity bound. Generation requires both valid and invalid candidate slots, and evaluation preserves protected objects and an empty final hand. Several placements can be valid; levels are not model-calibrated.",
+      "actions": "`PickupObject`, navigation, `PLACE`(`slot_id`), `FINISH`.",
+      "limits": "Single-target discrete placement; pose reasoning is handled separately. Native RGB no longer overlays object numbers. Public references use `view:STEP:X:Y` (normalized observed-image coordinates); segmentation and identifier resolution remain private. Existing clips use the previous numbered protocol. New native rollouts require runtime revalidation; ambiguous same-type textual goals are rejected.",
+      "phase_labels": {
+        "interaction": "Rearrange"
+      }
+    },
+    "dynamic_replanning": {
+      "definition": "Navigation after a checkpoint-triggered physical obstruction changes the room.",
+      "objective": "Reach the checkpoint, find a valid detour, then mark and finish near the destination.",
+      "factors": [
+        [
+          "Checkpoint and event",
+          "Task intervention",
+          "A real object moves after the checkpoint is reached."
+        ],
+        [
+          "Route feasibility",
+          "Construction check",
+          "A formerly traversable edge must fail and an executable alternate route must remain."
+        ]
+      ],
+      "verification": "Require `checkpoint_reached`, `goal_marked`, `at_goal` and `native_blocked_edge_verified`; the evaluator checks the physical intervention and completed navigation.",
+      "difficulty": "L1/L2/L3 require sampled routes of at least `8 + 2 × difficulty` nodes before the verified checkpoint intervention. A physical obstruction and executable detour are checked. One intervention is used; route length alone does not establish adaptation. Checkpoint visibility, detour and `max_steps` affect the selected instance. No measured hierarchy is claimed.",
+      "actions": "Navigation, looking, `WAIT`, `MARK`(`object_id`), `FINISH`.",
+      "limits": "This is indoor physical replanning, not simulated road traffic. Native RGB no longer overlays object numbers. Public references use `view:STEP:X:Y` (normalized observed-image coordinates); segmentation and identifier resolution remain private. Existing clips use the previous numbered protocol. New native rollouts require runtime revalidation; ambiguous same-type textual goals are rejected.",
+      "phase_labels": {
+        "before_change": "Explore",
+        "after_change": "Replan"
+      }
+    },
+    "deliverybench": {
+      "definition": "Long-horizon courier delivery task implemented by the DeliveryBench Python task layer on its dedicated SimWorld build.",
+      "objective": "Complete deliveries and maximize net profit while respecting native spatial, time, resource and food-handling constraints.",
+      "factors": [
+        [
+          "Orders and destinations",
+          "Task configuration / dynamic state",
+          "Pickup, preparation time, deadline and customer instructions."
+        ],
+        [
+          "Transport and replenishment",
+          "Agent decisions",
+          "Travel time, costs, stamina, battery and charging."
+        ],
+        [
+          "Food and bag state",
+          "Task dynamics",
+          "Temperature, compartment placement and delivery quality."
+        ]
+      ],
+      "verification": "Use native delivery lifecycle and settlement records. `_compute_reward()` in the Gym wrapper returns zero; `reward` alone is not net profit or a benchmark score.",
+      "difficulty": "City size and task constraints are benchmark factors; there is no shared L1-L3 scale with the custom tasks.",
+      "actions": "`VIEW_ORDERS`, `ACCEPT_ORDER`, `MOVE`, `TURN_AROUND`, `STEP_FORWARD`, `PICKUP`, `DROP_OFF`, `CHARGE`, `WAIT`, `SWITCH` and bag APIs.",
+      "limits": "The imported eight-snapshot recording is a manual/scripted integration cutoff, not a successful full benchmark episode. Task wrapper revision af7146c9e09edc06137c2c9e330190a0a177fdc8."
+    }
+  }
+}

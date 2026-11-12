@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "name": "memory_maze",
+  "title": "真实室内地标记忆与顺序重访",
+  "description": "在 iTHOR 第一人称场景中探索地标、形成空间记忆，并按顺序实际重访。",
+  "backend": "spatial_interaction",
+  "defaults": {
+    "seed": 42,
+    "difficulty": 1,
+    "split": "development"
+  },
+  "environment": "thor_tasks",
+  "task_type": "memory_maze"
+}

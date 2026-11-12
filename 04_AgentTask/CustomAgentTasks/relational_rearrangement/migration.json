@@ -1,0 +1,6 @@
+{
+  "status": "native_validated",
+  "source": "interaction_lab/tasks/relational_rearrangement",
+  "validation": "05_Experiment/results/native-migration-relational_rearrangement-372012/validation.json",
+  "original_entry_backup": "archive/agent-interaction/2026-10-19-symbolic-task-entries/relational_rearrangement"
+}
