@@ -8,6 +8,7 @@ Use this existing directory for dated workspace notes and superseded material, g
 | --- | --- |
 | [Research and agent handoff workflow](agent-interaction/2026-11-12-research-and-agent-workflow.md) | One-case research cycle, demo acceptance check, and minimal Claude Code/Codex handoff; includes the transition to source-only Git tracking. |
 | [tmux and demo recovery](workspace/2026-11-12-tmux-and-demo-recovery.md) | Current agent pane snapshot, durable recovery checks, and a future dedicated research demo session. |
+| [Slurm usage probe](workspace/2026-11-12-slurm-usage-probe.md) | Bounded MIG job accepted and accounted for while active credits displayed $0. |
 | [Unified research demo](agent-interaction/2026-10-25-unified-demo.md) | Consolidated recordings, online environment/model APIs, simulator/task taxonomy, selector-driven definitions and exact-case media; legacy entrypoints archived. |
 | [Demo coverage audit](agent-interaction/2026-10-25-demo-coverage.md) | Current player versus prior research, symbolic, and DeliveryBench demos; restored transition inspection and explicit unported capabilities. |
 | [Interaction research presentation](agent-interaction/2026-10-25-interaction-presentation.md) | Corrected presentation scope, DeliveryBench/VLM-3R/PHAI reference review, eight task examples, model diagnostic, PDF/MP4/PNG export, and evidence checks. |
